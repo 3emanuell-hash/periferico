@@ -39,36 +39,19 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-
-        /* Animación 3D de volteo de cartas (Flip) */
-        .perspective-container {
-            perspective: 1200px;
-        }
+        .perspective-container { perspective: 1200px; }
         .card-flipper {
-            position: relative;
-            width: 100%;
-            height: 100%;
+            position: relative; width: 100%; height: 100%;
             transition: transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
             transform-style: preserve-3d;
         }
-        .card-flipper.is-flipped {
-            transform: rotateY(180deg);
-        }
+        .card-flipper.is-flipped { transform: rotateY(180deg); }
         .card-face {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 1rem;
-            overflow: hidden;
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 1rem; overflow: hidden;
         }
-        .card-front {
-            transform: rotateY(180deg);
-        }
-
-        /* Patrón místico del dorso con Sol, Luna y Mercurio */
+        .card-front { transform: rotateY(180deg); }
         .card-back-design {
             background-color: #1a0d2e;
             background-image: 
@@ -76,15 +59,11 @@
                 repeating-linear-gradient(45deg, rgba(234, 179, 8, 0.05) 0px, rgba(234, 179, 8, 0.05) 1px, transparent 1px, transparent 14px),
                 repeating-linear-gradient(-45deg, rgba(168, 85, 247, 0.06) 0px, rgba(168, 85, 247, 0.06) 1px, transparent 1px, transparent 14px);
         }
-
         @keyframes dealCard {
             0% { opacity: 0; transform: translateY(25px) scale(0.92); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
-        .animate-deal {
-            animation: dealCard 0.45s ease-out forwards;
-        }
-
+        .animate-deal { animation: dealCard 0.45s ease-out forwards; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #130921; }
         ::-webkit-scrollbar-thumb { background: #3b2063; border-radius: 999px; }
@@ -93,10 +72,8 @@
 </head>
 <body class="antialiased flex flex-col selection:bg-gold/30 selection:text-yellow-200">
 
-    <!-- Notificaciones Toast -->
     <div id="toast-box" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-    <!-- Modal de Confirmación -->
     <div id="confirm-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
         <div class="bg-panel border border-gold/40 rounded-2xl max-w-md w-full p-6 shadow-2xl">
             <h3 id="confirm-title" class="font-serif text-lg font-bold text-gold mb-2">Confirmar acción</h3>
@@ -108,32 +85,21 @@
         </div>
     </div>
 
-    <!-- Modal de Lectura Ampliada -->
     <div id="detail-modal" class="fixed inset-0 z-40 hidden items-center justify-center bg-black/85 backdrop-blur-md p-4 overflow-y-auto" onclick="if(event.target === this) closeDetailModal()">
-        <div class="bg-panel border-2 border-gold/50 rounded-2xl max-w-xl w-full overflow-hidden shadow-[0_0_60px_rgba(234,179,8,0.25)] my-auto" id="detail-modal-body">
-        </div>
+        <div class="bg-panel border-2 border-gold/50 rounded-2xl max-w-xl w-full overflow-hidden shadow-[0_0_60px_rgba(234,179,8,0.25)] my-auto" id="detail-modal-body"></div>
     </div>
 
-    <!-- CABECERA -->
     <header class="sticky top-0 z-30 bg-void/90 backdrop-blur-md border-b border-gold/25">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-            <!-- Logo Sol + Luna + Mercurio y Título -->
             <div class="flex items-center gap-3.5">
                 <div class="w-12 h-12 rounded-2xl bg-panel border border-gold/50 flex items-center justify-center text-gold shadow-[0_0_20px_rgba(234,179,8,0.18)] shrink-0">
-                    <!-- SVG Sol, Luna y Mercurio entrelazados en dorado -->
                     <svg class="w-8 h-8" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <!-- Sol (Centro) -->
                         <circle cx="14" cy="15" r="4" fill="currentColor" fill-opacity="0.15"/>
-                        <line x1="14" y1="8" x2="14" y2="10" />
-                        <line x1="14" y1="20" x2="14" y2="22" />
-                        <line x1="7" y1="15" x2="9" y2="15" />
-                        <line x1="19" y1="15" x2="21" y2="15" />
-                        <!-- Luna Creciente (Izquierda) -->
+                        <line x1="14" y1="8" x2="14" y2="10" /><line x1="14" y1="20" x2="14" y2="22" />
+                        <line x1="7" y1="15" x2="9" y2="15" /><line x1="19" y1="15" x2="21" y2="15" />
                         <path d="M11 9.5a5.5 5.5 0 0 0 0 11 4.5 4.5 0 0 1 0-11z" fill="currentColor" fill-opacity="0.25"/>
-                        <!-- Símbolo de Mercurio (Derecha / Encima) -->
                         <circle cx="23" cy="13" r="2.5" fill="currentColor" fill-opacity="0.2"/>
-                        <path d="M20.5 15.5 L23 18.5 L25.5 15.5" />
-                        <line x1="23" y1="18.5" x2="23" y2="22" />
+                        <path d="M20.5 15.5 L23 18.5 L25.5 15.5" /><line x1="23" y1="18.5" x2="23" y2="22" />
                         <path d="M21 20.5 Q23 21.5 25 20.5" />
                     </svg>
                 </div>
@@ -141,56 +107,32 @@
                     <h1 class="font-serif text-xl sm:text-2xl md:text-3xl font-extrabold tracking-wider text-gold drop-shadow-[0_2px_10px_rgba(234,179,8,0.25)]">
                         ORÁCULO PERIFÉRICO
                     </h1>
-                    <p class="text-xs sm:text-sm font-mono text-purple-200/80">
-                        mazo de/codificacion comunitaria
-                    </p>
+                    <p class="text-xs sm:text-sm font-mono text-purple-200/80">mazo de/codificacion comunitaria</p>
                 </div>
             </div>
 
-            <!-- Navegación 3 Pestañas -->
             <nav class="flex bg-panel p-1.5 rounded-xl border border-gold/25 w-full md:w-auto justify-center gap-1">
-                <button onclick="switchTab('tirada')" id="nav-tirada" class="nav-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-semibold transition-all bg-gold text-void shadow-md cursor-pointer">
-                    ✦ Tirada
-                </button>
-                <button onclick="switchTab('galeria')" id="nav-galeria" class="nav-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all text-purple-200 hover:text-white hover:bg-panelLight cursor-pointer">
-                    ◈ Galería (<span id="total-cards-badge">0</span>)
-                </button>
-                <button onclick="switchTab('editor')" id="nav-editor" class="nav-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all text-purple-200 hover:text-white hover:bg-panelLight cursor-pointer">
-                    ⚙ Cargar / Editar
-                </button>
+                <button onclick="switchTab('tirada')" id="nav-tirada" class="nav-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-semibold transition-all bg-gold text-void shadow-md cursor-pointer">✦ Tirada</button>
+                <button onclick="switchTab('galeria')" id="nav-galeria" class="nav-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all text-purple-200 hover:text-white hover:bg-panelLight cursor-pointer">◈ Galería (<span id="total-cards-badge">0</span>)</button>
+                <button onclick="switchTab('editor')" id="nav-editor" class="nav-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all text-purple-200 hover:text-white hover:bg-panelLight cursor-pointer">⚙ Cargar / Editar</button>
             </nav>
         </div>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8">
-
-        <!-- ========================================================= -->
-        <!-- PESTAÑA 1: MESA DE TIRADA INTERACTIVA                     -->
-        <!-- ========================================================= -->
+        <!-- PESTAÑA 1: TIRADA -->
         <section id="tab-tirada" class="space-y-8">
-            <!-- Panel Superior: Consulta y Esquema de Tirada -->
             <div class="bg-panel border border-gold/30 rounded-2xl p-5 sm:p-6 shadow-2xl space-y-5">
-                
-                <!-- Cuadro de Pregunta -->
                 <div class="space-y-2">
-                    <label for="question-input" class="block font-serif text-base sm:text-lg font-bold text-gold">
-                        Qué quieres preguntar al oráculo
-                    </label>
+                    <label for="question-input" class="block font-serif text-base sm:text-lg font-bold text-gold">Qué quieres preguntar al oráculo</label>
                     <div class="flex flex-col sm:flex-row gap-3">
                         <input type="text" id="question-input" placeholder="Escribí tu consulta, situación o intención antes de repartir..." class="flex-1 bg-void/90 border border-gold/30 focus:border-gold rounded-xl px-4 py-3 text-sm sm:text-base text-white placeholder-purple-300/40 focus:outline-none transition">
-                        <button type="button" onclick="pinQuestion()" class="px-5 py-3 rounded-xl bg-panelLight hover:bg-purple-800/70 border border-gold/40 text-gold text-sm font-semibold transition shrink-0 cursor-pointer">
-                            Fijar pregunta
-                        </button>
+                        <button type="button" onclick="pinQuestion()" class="px-5 py-3 rounded-xl bg-panelLight hover:bg-purple-800/70 border border-gold/40 text-gold text-sm font-semibold transition shrink-0 cursor-pointer">Fijar pregunta</button>
                     </div>
                 </div>
 
-                <!-- Selector de Tirada y Botón Repartir -->
                 <div class="pt-4 border-t border-gold/15 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
-                    <p class="text-xs sm:text-sm text-purple-200/80">
-                        Se despliega el mazo completo boca abajo. <span class="text-gold font-semibold">Elegí manualmente</span> tus cartas en la mesa.
-                    </p>
-
+                    <p class="text-xs sm:text-sm text-purple-200/80">Se despliega el mazo completo boca abajo. <span class="text-gold font-semibold">Elegí manualmente</span> tus cartas en la mesa.</p>
                     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
                         <select id="spread-selector" class="bg-void border border-gold/40 text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-gold transition cursor-pointer">
                             <option value="1">1 Carta — Mensaje del día</option>
@@ -201,7 +143,6 @@
                             <option value="caminos">Caminos a seguir — Situación / Desafío / Consejo / Posible resultado</option>
                             <option value="llave">Tirada con Llave — 3 Cartas + 1 Llave de Poder</option>
                         </select>
-
                         <button type="button" onclick="initSpreadDealing()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-gold to-yellow-500 hover:from-yellow-400 hover:to-amber-300 text-void font-extrabold text-sm shadow-lg shadow-gold/20 active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer">
                             <span>✦</span> Desplegar Mazo en Mesa
                         </button>
@@ -209,16 +150,13 @@
                 </div>
             </div>
 
-            <!-- Cartel de Pregunta Fijada en la Mesa -->
             <div id="pinned-question-box" class="hidden bg-panelLight/80 border border-gold/40 rounded-2xl px-6 py-4 text-center max-w-3xl mx-auto shadow-lg relative">
                 <button onclick="clearPinnedQuestion()" class="absolute top-2.5 right-3 text-xs text-purple-300 hover:text-white" title="Quitar pregunta">✕</button>
                 <span class="block text-[11px] font-mono uppercase tracking-widest text-gold/80 mb-1">Consulta activa en la mesa</span>
                 <p id="pinned-question-text" class="font-serif text-base sm:text-xl text-white italic"></p>
             </div>
 
-            <!-- Mesa de Cartas y Selector Interactivo -->
             <div id="table-area" class="min-h-[420px] flex flex-col items-center justify-center space-y-6">
-                <!-- Estado vacío inicial -->
                 <div id="table-empty" class="text-center py-14 px-4 max-w-md mx-auto space-y-4">
                     <div class="w-24 h-36 mx-auto rounded-2xl border-2 border-dashed border-gold/40 bg-panel/60 flex flex-col items-center justify-center text-gold gap-2">
                         <span class="text-3xl">🎴</span>
@@ -227,43 +165,28 @@
                     <h2 class="font-serif text-xl text-white">La mesa está preparada</h2>
                     <p class="text-sm text-purple-200/75">Elegí tu tirada y apretá <span class="text-gold font-semibold">"Desplegar Mazo en Mesa"</span>.</p>
                 </div>
-
-                <!-- Instrucción de Selección Activa -->
                 <div id="selection-banner" class="hidden w-full bg-panel/90 border border-gold/50 rounded-2xl p-4 text-center shadow-lg">
                     <span id="selection-instruction" class="font-serif text-gold text-base sm:text-lg font-bold">Seleccioná cartas de la baraja</span>
-                    <p id="selection-counter" class="text-xs font-mono text-purple-200 mt-1">Faltan seleccionar 3 cartas</p>
                 </div>
-
-                <!-- Contenedor del Mazo Extendido boca abajo para elegir -->
-                <div id="deck-pool-grid" class="hidden w-full grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3 p-4 bg-void/50 border border-gold/20 rounded-2xl max-h-[380px] overflow-y-auto">
-                </div>
-
-                <!-- Slots de la Tirada Seleccionada (Resultado) -->
+                <div id="deck-pool-grid" class="hidden w-full grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3 p-4 bg-void/50 border border-gold/20 rounded-2xl max-h-[380px] overflow-y-auto"></div>
                 <div id="selected-slots-container" class="hidden w-full space-y-4 pt-4 border-t border-gold/20">
                     <h3 class="font-serif text-lg font-bold text-gold text-center">Cartas Seleccionadas en la Tirada</h3>
-                    <div id="dealt-grid" class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch justify-items-center">
-                    </div>
+                    <div id="dealt-grid" class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch justify-items-center"></div>
                 </div>
             </div>
 
-            <!-- Acciones Extra de Mesa -->
             <div id="table-controls" class="hidden flex justify-center gap-4 pt-2">
-                <button type="button" onclick="resetSpread()" class="px-5 py-2.5 rounded-xl bg-panel hover:bg-panelLight text-gold text-xs font-mono border border-gold/35 transition cursor-pointer">
-                    ↺ Volver a mezclar y repartir
-                </button>
+                <button type="button" onclick="resetSpread()" class="px-5 py-2.5 rounded-xl bg-panel hover:bg-panelLight text-gold text-xs font-mono border border-gold/35 transition cursor-pointer">↺ Volver a mezclar y repartir</button>
             </div>
         </section>
 
-        <!-- ========================================================= -->
-        <!-- PESTAÑA 2: GALERÍA COMPLETA DE CARTAS                     -->
-        <!-- ========================================================= -->
+        <!-- PESTAÑA 2: GALERÍA -->
         <section id="tab-galeria" class="hidden space-y-6">
             <div class="bg-panel border border-gold/30 rounded-2xl p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div>
                     <h2 class="font-serif text-xl font-bold text-gold">Archivo Completo del Mazo</h2>
-                    <p class="text-xs sm:text-sm text-purple-200/80">Explorá todas las cartas organizadas por sus 10 casas. Las cartas pendientes muestran solo su título.</p>
+                    <p class="text-xs sm:text-sm text-purple-200/80">Explorá todas las cartas organizadas por sus 10 casas.</p>
                 </div>
-
                 <div class="flex flex-col sm:flex-row gap-3">
                     <input type="text" id="gallery-search-input" oninput="renderGallery()" placeholder="Buscar por nombre o texto..." class="bg-void border border-gold/30 focus:border-gold text-white text-sm rounded-xl px-4 py-2.5 focus:outline-none">
                     <select id="gallery-cat-select" onchange="renderGallery()" class="bg-void border border-gold/30 focus:border-gold text-white text-sm rounded-xl px-4 py-2.5 focus:outline-none cursor-pointer">
@@ -271,482 +194,102 @@
                     </select>
                 </div>
             </div>
-
-            <div id="gallery-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            </div>
+            <div id="gallery-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
         </section>
 
-        <!-- ========================================================= -->
-        <!-- PESTAÑA 3: CARGAR / EDITAR (FORMULARIO ROBUSTO Y DIRECTO) -->
-        <!-- ========================================================= -->
+        <!-- PESTAÑA 3: EDITOR -->
         <section id="tab-editor" class="hidden space-y-6">
-            <!-- Barra superior de selección rápida y utilidades -->
             <div class="bg-panel border border-gold/30 rounded-2xl p-5 space-y-4">
                 <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-gold/15 pb-4">
                     <div>
                         <h2 class="font-serif text-xl font-bold text-gold">Gestor y Editor de Cartas</h2>
-                        <p class="text-xs sm:text-sm text-purple-200/80">Seleccioná una carta existente para escribir su texto, subirle imagen o crear una nueva.</p>
+                        <p class="text-xs sm:text-sm text-purple-200/80">Seleccioná una carta para editar o crear una nueva.</p>
                     </div>
                     <div class="flex flex-wrap gap-2">
-                        <button type="button" onclick="startNewCard()" class="px-4 py-2.5 rounded-xl bg-gold hover:bg-yellow-400 text-void font-bold text-xs sm:text-sm transition cursor-pointer">
-                            + Crear nueva carta
-                        </button>
-                        <button type="button" onclick="exportDeckJSON()" class="px-3.5 py-2.5 rounded-xl bg-panelLight hover:bg-purple-800 text-purple-100 text-xs font-mono border border-gold/30 transition cursor-pointer">
-                            ↓ Exportar Mazo (.json)
-                        </button>
+                        <button type="button" onclick="startNewCard()" class="px-4 py-2.5 rounded-xl bg-gold hover:bg-yellow-400 text-void font-bold text-xs sm:text-sm transition cursor-pointer">+ Crear nueva carta</button>
+                        <button type="button" onclick="exportDeckJSON()" class="px-3.5 py-2.5 rounded-xl bg-panelLight hover:bg-purple-800 text-purple-100 text-xs font-mono border border-gold/30 transition cursor-pointer">↓ Exportar Mazo (.json)</button>
                         <label class="px-3.5 py-2.5 rounded-xl bg-panelLight hover:bg-purple-800 text-purple-100 text-xs font-mono border border-gold/30 transition cursor-pointer">
                             ↑ Importar Mazo (.json)
                             <input type="file" accept=".json" onchange="importDeckJSON(event)" class="hidden">
                         </label>
-                        <button type="button" onclick="askResetFactory()" class="px-3.5 py-2.5 rounded-xl bg-rose-950/70 hover:bg-rose-900 text-rose-200 text-xs font-mono border border-rose-700/50 transition cursor-pointer">
-                            ↺ Restaurar Mazo de Fábrica
-                        </button>
+                        <button type="button" onclick="askResetFactory()" class="px-3.5 py-2.5 rounded-xl bg-rose-950/70 hover:bg-rose-900 text-rose-200 text-xs font-mono border border-rose-700/50 transition cursor-pointer">↺ Restaurar Fábrica</button>
                     </div>
                 </div>
-
-                <!-- Buscador y Selector Desplegable de Cartas -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
                     <div class="md:col-span-4">
-                        <label class="block text-xs font-mono text-purple-200/80 mb-1.5">Filtrar selector por nombre:</label>
-                        <input type="text" id="editor-filter-input" oninput="populateEditorDropdown()" placeholder="Ej: Mate, Tren Roca..." class="w-full bg-void border border-gold/30 focus:border-gold text-white text-sm rounded-xl px-3.5 py-2.5 focus:outline-none">
+                        <label class="block text-xs font-mono text-purple-200/80 mb-1.5">Filtrar selector:</label>
+                        <input type="text" id="editor-filter-input" oninput="populateEditorDropdown()" placeholder="Ej: Mate..." class="w-full bg-void border border-gold/30 text-white text-sm rounded-xl px-3.5 py-2.5 focus:outline-none">
                     </div>
                     <div class="md:col-span-8">
-                        <label class="block text-xs font-mono text-gold mb-1.5">Seleccionar carta para editar (<span id="selector-count-label">0</span> disponibles):</label>
-                        <select id="editor-card-selector" onchange="loadSelectedCardIntoForm()" class="w-full bg-void border border-gold/50 focus:border-gold text-white text-sm rounded-xl px-3.5 py-2.5 focus:outline-none cursor-pointer">
-                        </select>
+                        <label class="block text-xs font-mono text-gold mb-1.5">Seleccionar carta (<span id="selector-count-label">0</span>):</label>
+                        <select id="editor-card-selector" onchange="loadSelectedCardIntoForm()" class="w-full bg-void border border-gold/50 text-white text-sm rounded-xl px-3.5 py-2.5 focus:outline-none cursor-pointer"></select>
                     </div>
                 </div>
             </div>
 
-            <!-- Formulario Directo de Edición -->
             <form id="editor-form" onsubmit="handleSaveCard(event)" class="bg-panel border border-gold/30 rounded-2xl p-6 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <input type="hidden" id="edit-id">
-
-                <!-- Columna Izquierda: Datos e Imagen -->
                 <div class="lg:col-span-5 space-y-5">
                     <div class="flex items-center justify-between">
-                        <span id="editor-mode-badge" class="text-xs font-mono uppercase tracking-wider px-3 py-1 rounded-full bg-gold/20 text-gold border border-gold/40">
-                            Editando Carta
-                        </span>
-                        <button type="button" id="btn-delete-card" onclick="askDeleteCurrentCard()" class="text-xs font-mono text-rose-400 hover:text-rose-300 underline cursor-pointer">
-                            Eliminar esta carta
-                        </button>
+                        <span id="editor-mode-badge" class="text-xs font-mono uppercase tracking-wider px-3 py-1 rounded-full bg-gold/20 text-gold border border-gold/40">Editando</span>
+                        <button type="button" id="btn-delete-card" onclick="askDeleteCurrentCard()" class="text-xs font-mono text-rose-400 hover:text-rose-300 underline cursor-pointer">Eliminar carta</button>
                     </div>
-
                     <div>
-                        <label class="block text-xs font-mono text-purple-200/90 mb-1.5">Título de la Carta *</label>
-                        <input type="text" id="edit-title" required class="w-full bg-void border border-gold/35 focus:border-gold text-white text-sm rounded-xl px-4 py-2.5 focus:outline-none">
+                        <label class="block text-xs font-mono text-purple-200/90 mb-1.5">Título *</label>
+                        <input type="text" id="edit-title" required class="w-full bg-void border border-gold/35 text-white text-sm rounded-xl px-4 py-2.5 focus:outline-none">
                     </div>
-
                     <div>
-                        <label class="block text-xs font-mono text-purple-200/90 mb-1.5">Categoría (1 a 10) *</label>
-                        <select id="edit-category" required class="w-full bg-void border border-gold/35 focus:border-gold text-white text-sm rounded-xl px-4 py-2.5 focus:outline-none cursor-pointer">
-                        </select>
+                        <label class="block text-xs font-mono text-purple-200/90 mb-1.5">Categoría *</label>
+                        <select id="edit-category" required class="w-full bg-void border border-gold/35 text-white text-sm rounded-xl px-4 py-2.5 focus:outline-none cursor-pointer"></select>
                     </div>
-
                     <div>
-                        <label class="block text-xs font-mono text-purple-200/90 mb-1.5">Etiqueta / Tipo (Ej: [T], [meme], Arquetipo, Llave)</label>
-                        <input type="text" id="edit-tag" placeholder="Opcional" class="w-full bg-void border border-gold/35 focus:border-gold text-white text-sm rounded-xl px-4 py-2.5 focus:outline-none">
+                        <label class="block text-xs font-mono text-purple-200/90 mb-1.5">Etiqueta / Tipo</label>
+                        <input type="text" id="edit-tag" placeholder="Opcional" class="w-full bg-void border border-gold/35 text-white text-sm rounded-xl px-4 py-2.5 focus:outline-none">
                     </div>
-
-                    <!-- Carga de Imagen con Compresión Automática -->
                     <div class="space-y-2.5 pt-2 border-t border-gold/15">
                         <label class="block text-xs font-mono text-gold">Imagen de la Carta</label>
-                        
                         <label class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-panelLight hover:bg-purple-800/80 border border-dashed border-gold/50 text-xs sm:text-sm text-white cursor-pointer transition">
-                            <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
-                            <span>Subir imagen desde archivo (PC / Celular)</span>
+                            <span>Subir imagen desde archivo</span>
                             <input type="file" id="edit-file-input" accept="image/*" onchange="processImageFile(event)" class="hidden">
                         </label>
-
-                        <input type="text" id="edit-image-url" oninput="updatePreviewFromInput()" placeholder="O pegá una URL de imagen..." class="w-full bg-void border border-gold/30 focus:border-gold text-white text-xs rounded-xl px-3.5 py-2 focus:outline-none">
-
-                        <!-- Vista Previa -->
+                        <input type="text" id="edit-image-url" oninput="updatePreviewFromInput()" placeholder="O pegá URL..." class="w-full bg-void border border-gold/30 text-white text-xs rounded-xl px-3.5 py-2 focus:outline-none">
                         <div class="relative rounded-xl overflow-hidden border border-gold/30 bg-void h-44 flex items-center justify-center">
                             <img id="edit-image-preview" src="" alt="Vista previa" class="w-full h-full object-contain">
-                            <button type="button" id="btn-remove-img" onclick="removeCustomImage()" class="hidden absolute top-2 right-2 bg-black/80 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded-lg transition cursor-pointer">
-                                Quitar imagen
-                            </button>
+                            <button type="button" id="btn-remove-img" onclick="removeCustomImage()" class="hidden absolute top-2 right-2 bg-black/80 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded-lg transition cursor-pointer">Quitar</button>
                         </div>
-                        <p class="text-[11px] text-purple-300/70">Las imágenes subidas se optimizan automáticamente para guardarse de forma segura en tu navegador.</p>
                     </div>
                 </div>
 
-                <!-- Columna Derecha: Área de Texto Oracular -->
                 <div class="lg:col-span-7 flex flex-col justify-between space-y-5">
                     <div class="flex-1 flex flex-col space-y-2">
-                        <label for="edit-text" class="block text-xs font-mono text-purple-200/90">
-                            Lectura Oracular / Texto Poético Completo * <span class="text-gold">(Si se deja vacío, la carta queda pendiente)</span>
-                        </label>
-                        <textarea id="edit-text" rows="14" placeholder="Escribí aquí los versos, claves, reflexiones y sentido de la carta..." class="w-full flex-1 bg-void border border-gold/35 focus:border-gold text-white text-sm sm:text-base leading-relaxed rounded-xl p-4 focus:outline-none resize-y"></textarea>
+                        <label for="edit-text" class="block text-xs font-mono text-purple-200/90">Lectura Oracular / Texto Completo *</label>
+                        <textarea id="edit-text" rows="14" placeholder="Escribí aquí..." class="w-full flex-1 bg-void border border-gold/35 text-white text-sm leading-relaxed rounded-xl p-4 focus:outline-none resize-y"></textarea>
                     </div>
-
-                    <div class="flex flex-col sm:flex-row items-center justify-end gap-3 pt-2">
-                        <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-gold to-yellow-500 hover:from-yellow-400 hover:to-amber-300 text-void font-extrabold text-sm sm:text-base shadow-lg shadow-gold/20 active:scale-95 transition cursor-pointer">
-                            ✓ Guardar Cambios
-                        </button>
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-gold to-yellow-500 text-void font-extrabold text-sm shadow-lg cursor-pointer">✓ Guardar Cambios</button>
                     </div>
                 </div>
             </form>
         </section>
-
     </main>
 
-    <!-- PIE DE PÁGINA -->
     <footer class="border-t border-gold/20 py-6 mt-12 text-center text-xs font-mono text-purple-300/70">
         ORÁCULO PERIFÉRICO — mazo de/codificacion comunitaria
     </footer>
 
-    <!-- SCRIPT PRINCIPAL -->
     <script>
         const STORAGE_KEY = 'oraculo_periferico_v5';
-
         const CATEGORIES = [
-            "1. Cuerpo y vínculos",
-            "2. Estados y tránsitos internos",
-            "3. Ciudad y movilidad",
-            "4. Naturaleza",
-            "5. Los Enemigos",
-            "6. Resistencias, luchas y referentes",
-            "7. La cultura como arma",
-            "8. Mística y lo sagrado",
-            "9. Países y geopolítica",
-            "10. Llaves"
-        ];
-
-        // Textos completos originales del usuario
-        const USER_FULL_TEXTS = {
-            "Dormir (El derecho a la pereza)": `• La crisis del sueño: En la sociedad hiperconectada de hoy, el sueño a menudo se sacrifica en pos de la productividad, el rendimiento laboral o el consumo nocturno.
-• El descanso como resistencia: Reclamar las horas necesarias de sueño y desconexión total se ha convertido en un acto de rebeldía frente a la cultura del burnout (desgaste profesional) y la glorificación del estar "siempre ocupado".
-• Salud y bienestar: Dormir bien y permitirse el ocio no son lujos, sino necesidades fisiológicas y emocionales esenciales que la obra de Lafargue anticipaba como derechos fundamentales arrebatados por la alienación del sistema.
-
-Descansa de la productividad, desconéctate, glorifica tu reposo en la pereza y quietud.
-El ocio como derecho, tu salario también es el tiempo libre y energía que te quedó después de la jornada.
-Defiende tu tiempo libre para recuperar tu vida, cuida la pequeña muerte cotidiana, donde puedes recuperar energía cada día y darle un sentido a cada despertar.
-Cela tu sueño de noche, donde la mente y el corazón desahogan la tensión.
-En el descanso se curan y calman algunas heridas.
-Descansa para cuidar la llama.
-Que el dormir sin reloj no sea una utopía.
-Que tus sueños se hagan realidad mientras duermes.`,
-
-            "Eva 01 [T]": `Eva 01 berserker
-Escuchar el llamado, el latido de auxilio
-Retroceder para recuperar
-Atrapar la garra mientras se cree ganador,
-Frenar el brazo que golpea, cortarlo cuando se extendió
-Sostener la tensión, como cuando se agarra el mango de un martillo
-El objetivo es eliminar lo que amenaza a los hijos
-Correr hacia los ojos y atacar en el centro
-Lo que queda hacer es morder y devorar,
-Aquello que nos cazaba ahora se convirtió en nuestra presa.
-
-Aumentar la respiración
-Sincronización con el animal
-Sacrificar el dolor para enfrentar lo que quita la vida
-Instinto de madre, cuidar a toda costa al hijo
-Defender la humanidad con animalidad brutal
-Alimentarse del otro por supervivencia
-De presa a depredador implacable
-Estado primario de defensa
-Defender el territorio y espacio personal
-Regeneración y recuperación.`,
-
-            "Edu y el simbionte [T]": `Edu y el simbionte
-A dónde iremos, no se sabe pero quizás a donde necesiten protectores letales
-Aceptarse a uno, incluso a las contradicciones
-Expresar el límite y normas de cada uno y de cada mundo
-Cuando amas a alguien, aceptas a la persona completa incluso con sus defectos
-Parasitarse para encontrar el lugar sano de cada uno
-Como villanos que se convierten en antihéroes
-Nadie es perfecto
-Cada huésped es único, y por eso cada experiencia es enseñanza
-Alimentar el parásito para poder convivir
-Pérdida de control y reactividad
-Los cerebros son deliciosos.`,
-
-            "El ogro / Shrek [T]": `El ogro
-¿Por qué la amabilidad?
-Una cara dice más que mil palabras, el ogro no cree en las adulaciones
-Ogro en mano, ogro enano
-Solo quiere terminar su trabajo y estar tranquilo en su casa
-Ya curtido del maltrato ajeno no confía fácilmente en los gestos,
-Por eso acostumbra a estar solo.
-Ogro que ríe, no muerde
-Inocente pero ya no se come cualquier chamullo
-Fuerte pero sensible en su orgullo
-Los ogros son como cebollas
-Mejor afuera que adentro, siempre lo he dicho
-Me juzgan sin siquiera conocerme
-Algún día querrán visitar mi pantano
-No soy un héroe, soy un desastre de alto funcionamiento
-A veces es hacer una cara y seguir camino.`,
-
-            "Tío Iroh [T]": `El tío Iroh — El dragón del oeste
-Dicen que el más rico es el que menos necesita y si el camino para el prestigio y status que buscamos implica perder lo que más amamos, ¿estamos dispuestos a pagar el precio?
-La paciencia es un vehículo esencial para derrotar el dolor y la tristeza.
-Aquel que conoció la guerra en carne propia, sabe el valor de paz y la coexistencia.
-El orgullo de una nación no es solo valorar lo propio sino también aceptar lo desconocido y cómo puede integrar al otro para ser más completo.
-Aquel que siendo el más poderoso de una nación prefiere ser un vendedor de blends de té es el que alcanza apreciar cada momento como único.
-La humildad abre puertas inimaginables, incluso las del perdón y lo divino.
-La humildad no es solo autoconocimiento sino reconocer los límites y virtudes de uno.
-El orgullo es fuente para la vergüenza e ira.
-La perfección y el poder se sobreestiman, es sabio elegir la felicidad y el amor.
-La última técnica es poder dirigir el rayo y ser un conductor transitorio, no se alimenta de ira, requiere paz mental; la energía está en todas partes, cómo separas y canalizas ese relámpago: primero respira y crea un camino, siente el flujo.
-Tomar la nación de la tierra para liberarla de la nación del fuego.
-Buscar terminar la guerra.
-El destino es nuestro amigo.
-Ayudar al idealista de corazón y honor incuestionable, al que luchó y sufrió y restauró su honor y puede restaurar el honor de la nación.
-¿Té delicioso o veneno mortal?
-Buscar ayuda del reino tierra.
-Jugar juegos de mesa.
-Compartí un té con un desconocido.`,
-
-            "Culpa": `¿Qué mandatos sociales y familiares llevamos? ¿Qué remordimiento sostenemos? ¿De qué manera queremos absolvernos?, ¿cómo redimimos nuestros errores?
-¿Qué cruz arrastramos? ¿Por qué nos martirizamos?
-O mejor nos preguntamos, de qué y para quién sirve la culpa:
-Si fallamos es producto de nuestra ignorancia
-Si erramos es parte del aprendizaje para tener sabiduría
-La acción de cambio y responsabilidad para dejar el autocastigo
-Una atención plena, aceptando lo que no se puede cambiar y actuando desde la virtud
-Ser íntegro y auténtico en asumir lo que elegimos
-Hacernos cargo de las consecuencias sin remordimientos
-La justicia que nos hace libres y no daña la humanidad
-El deseo de cambio de la realidad desde la compasión profunda
-La lealtad con uno mismo.`,
-
-            "Plazas": `Salgamos del encierro
-Vamos a la plaza, a tomar un poco de aire
-Juguemos en la hamaca
-O mejor en el sube y baja
-También está la calesita, a ver si tenemos suerte y podemos dar unas vueltas más
-Disfruta del verde pasto y la sombra de los árboles
-Que en un rato hay que volver a casa
-O sino sentémonos y quedémonos acá mientras vemos quien viene y va y pasa
-El sol va a salir en algún momento y la gente va a venir.`,
-
-            "Cotorra argentina [T]": `Cotorra argentina
-Comunidad, comunicación
-Advertir, vigilar
-Calor, territorio y jerarquía
-Hacerse escuchar en el griterío
-Ruido encimado invasor
-Sostener la amistad, red de cuidados
-Confianza de expresión en el grupo
-Multitud y cercanía como defensa
-Chillido de presencia y cantidad
-El valor de estar a tu lado
-Espontánea gracia.`,
-
-            "Río": `Agua dulce
-Refrescante y viva
-Que arrastra y empuja
-Fluye sin importar la forma, no tiene resistencia porque no se apega al lugar
-Es suave y arrolladora al mismo tiempo
-Qué dirección y por dónde pasan esos ríos
-Quién y para qué controlarlos
-Si no se cuida y respeta, puede ser una fuerza arrolladora incontrolable
-Escuchar el suelo y huele el ambiente para ver con qué ritmo viene
-No critiques, que el agua escucha
-Puede haber rivalidad si no se comparte su cauce
-Líquido que lava
-Bebe y sé cómo el agua
-Acércate a la orilla y espera
-No es fácil cruzarlos así que apégate al plan
-Haz puentes para cruzarlos.`,
-
-            "2001 + Helicóptero [T]": `2001
-Recetas del FMI, que traen la miseria conocida
-Recesión e inflación, densidad en la calle y ollas populares que sostienen
-En ritmos de tambores nacen cooperativas
-Estado resignado, infunden miedo como herramienta disciplinatoria
-Provocar y hambrear a un pueblo harto y que no tiene nada para perder más que sus ataduras de gobiernos chantas
-Odio y descontento que alimentan nuestros espíritus de lucha
-Asambleas y reuniones barriales
-Movimiento de desocupados, trabajadores y ahorristas
-Descontento en medida de fuerza: cortar las rutas, puentes y accesos de la ciudad
-Tomando la ciudad por asalto
-El enfrentamiento físico y la cacería a lugares de resistencia
-Masacres planificadas, la sangre de luchadores no nos deja respirar
-Renuncia del gobierno y conciliación.
-
-HELICÓPTERO
-Hélices del títere
-Señal de escape del gobernante
-Ruta de salida recomendada para el que se encuentra acorralado.
-Emergencia para toda la nación
-Que se vayan todos y no quede ni uno solo
-Vehículo rápido con desenlace de renuncia
-Casa Rosada, rosa como la sangre de luchadorxs derramada
-No hay vicepresidente
-¿Qué hacés cuando el poder se va por el aire y nadie atiende el teléfono?
-Solo queda tomar el poder.`
-        };
-
-        // Inventario completo con textos solo para los escritos
-        const RAW_INVENTORY = [
-            // 1. Cuerpo y vínculos
-            { cat: 0, title: "Dormir (El derecho a la pereza)", tag: "Necesidad", text: USER_FULL_TEXTS["Dormir (El derecho a la pereza)"] },
-            { cat: 0, title: "Comer", tag: "Necesidad", text: "" },
-            { cat: 0, title: "Cagar", tag: "Necesidad", text: "" },
-            { cat: 0, title: "Agua de tomar", tag: "Necesidad", text: "" },
-            { cat: 0, title: "Mate", tag: "Ritual", text: "" },
-            { cat: 0, title: "Fernet y Cinzano", tag: "Ritual", text: "" },
-            { cat: 0, title: "Cerveza y Vino", tag: "Ritual", text: "" },
-            { cat: 0, title: "Gaseosa", tag: "Ritual", text: "" },
-            { cat: 0, title: "Abuelos", tag: "Red", text: "" },
-            { cat: 0, title: "Familia", tag: "Red", text: "" },
-            { cat: 0, title: "Amigos", tag: "Red", text: "" },
-            { cat: 0, title: "Padre", tag: "Red", text: "" },
-            { cat: 0, title: "Madre", tag: "Red", text: "" },
-            { cat: 0, title: "Perros", tag: "Compañía", text: "" },
-            { cat: 0, title: "Gatos", tag: "Compañía", text: "" },
-
-            // 2. Estados y tránsitos internos
-            { cat: 1, title: "Eva 01 [T]", tag: "[T] Tránsito", text: USER_FULL_TEXTS["Eva 01 [T]"] },
-            { cat: 1, title: "Edu y el simbionte [T]", tag: "[T] Tránsito", text: USER_FULL_TEXTS["Edu y el simbionte [T]"] },
-            { cat: 1, title: "El ogro / Shrek [T]", tag: "[T] Tránsito", text: USER_FULL_TEXTS["El ogro / Shrek [T]"] },
-            { cat: 1, title: "Tío Iroh [T]", tag: "[T] Maestro", text: USER_FULL_TEXTS["Tío Iroh [T]"] },
-            { cat: 1, title: "Zuko", tag: "Tránsito", text: "" },
-            { cat: 1, title: "Duelo", tag: "Estado", text: "" },
-            { cat: 1, title: "Culpa", tag: "Estado", text: USER_FULL_TEXTS["Culpa"] },
-            { cat: 1, title: "Patologización", tag: "Alerta", text: "" },
-            { cat: 1, title: "Pesadillas", tag: "Estado", text: "" },
-            { cat: 1, title: "Sueños", tag: "Estado", text: "" },
-            { cat: 1, title: "El Séptimo Sello", tag: "Arquetipo", text: "" },
-            { cat: 1, title: "El Gato con Botas", tag: "Arquetipo", text: "" },
-            { cat: 1, title: "Demonios", tag: "Sombra", text: "" },
-
-            // 3. Ciudad y movilidad
-            { cat: 2, title: "Barrio", tag: "Lugar", text: "" },
-            { cat: 2, title: "Plazas", tag: "Lugar", text: USER_FULL_TEXTS["Plazas"] },
-            { cat: 2, title: "Club de barrio", tag: "Lugar", text: "" },
-            { cat: 2, title: "The Walking Conurban", tag: "Crónica", text: "" },
-            { cat: 2, title: "Patio argentino", tag: "Lugar", text: "" },
-            { cat: 2, title: "Backrooms", tag: "Umbral", text: "" },
-            { cat: 2, title: "Colectivos", tag: "Tránsito", text: "" },
-            { cat: 2, title: "Tren Roca", tag: "Tránsito", text: "" },
-            { cat: 2, title: "Moto", tag: "Tránsito", text: "" },
-            { cat: 2, title: "Bici", tag: "Tránsito", text: "" },
-            { cat: 2, title: "Avión", tag: "Tránsito", text: "" },
-            { cat: 2, title: "SUBE", tag: "Llave urbana", text: "" },
-            { cat: 2, title: "Celular", tag: "Conexión", text: "" },
-            { cat: 2, title: "Drone", tag: "Conexión", text: "" },
-            { cat: 2, title: "Wifi/5G", tag: "Conexión", text: "" },
-
-            // 4. Naturaleza
-            { cat: 3, title: "Cotorra argentina [T]", tag: "[T] Fauna", text: USER_FULL_TEXTS["Cotorra argentina [T]"] },
-            { cat: 3, title: "Carpincho [meme]", tag: "[meme] Fauna", text: "" },
-            { cat: 3, title: "Chingolo", tag: "Fauna", text: "" },
-            { cat: 3, title: "Hornero", tag: "Fauna", text: "" },
-            { cat: 3, title: "Zorzal y Calandria", tag: "Fauna", text: "" },
-            { cat: 3, title: "Pirincho", tag: "Fauna", text: "" },
-            { cat: 3, title: "Insectos de barrio", tag: "Fauna", text: "" },
-            { cat: 3, title: "Plantas de hogar", tag: "Flora", text: "" },
-            { cat: 3, title: "Plantas nativas", tag: "Flora", text: "" },
-            { cat: 3, title: "Montaña", tag: "Geografía", text: "" },
-            { cat: 3, title: "Río", tag: "Geografía", text: USER_FULL_TEXTS["Río"] },
-            { cat: 3, title: "Mar", tag: "Geografía", text: "" },
-            { cat: 3, title: "Monte", tag: "Geografía", text: "" },
-            { cat: 3, title: "Bosque", tag: "Geografía", text: "" },
-            { cat: 3, title: "Campo", tag: "Geografía", text: "" },
-            { cat: 3, title: "Fenómenos climáticos", tag: "Clima", text: "" },
-
-            // 5. Los Enemigos
-            { cat: 4, title: "Mercadomecago", tag: "Enemigo", text: "" },
-            { cat: 4, title: "Oligarcas", tag: "Enemigo", text: "" },
-            { cat: 4, title: "Militares de regiones", tag: "Enemigo", text: "" },
-            { cat: 4, title: "Musk", tag: "Enemigo", text: "" },
-            { cat: 4, title: "Zuckerberg", tag: "Enemigo", text: "" },
-            { cat: 4, title: "Thiel", tag: "Enemigo", text: "" },
-            { cat: 4, title: "Trump", tag: "Enemigo", text: "" },
-            { cat: 4, title: "Sionistas", tag: "Enemigo", text: "" },
-
-            // 6. Resistencias, luchas y referentes
-            { cat: 5, title: "Operario de fábrica", tag: "Cuerpo", text: "" },
-            { cat: 5, title: "Albañil", tag: "Cuerpo", text: "" },
-            { cat: 5, title: "Empleado de comercio", tag: "Cuerpo", text: "" },
-            { cat: 5, title: "Rappi", tag: "Cuerpo", text: "" },
-            { cat: 5, title: "Jubilados", tag: "Lucha", text: "" },
-            { cat: 5, title: "Discapacitados", tag: "Lucha", text: "" },
-            { cat: 5, title: "Comunidad trans", tag: "Lucha", text: "" },
-            { cat: 5, title: "Universidad", tag: "Lucha", text: "" },
-            { cat: 5, title: "Pueblos originarios", tag: "Lucha", text: "" },
-            { cat: 5, title: "Asamblea barrial", tag: "Organización", text: "" },
-            { cat: 5, title: "Sindicatos y partidos", tag: "Organización", text: "" },
-            { cat: 5, title: "2001 + Helicóptero [T]", tag: "[T] Memoria", text: USER_FULL_TEXTS["2001 + Helicóptero [T]"] },
-            { cat: 5, title: "Malvinas + Messi/ingleses [meme]", tag: "[meme] Memoria", text: "" },
-            { cat: 5, title: "El agua vale más que el oro", tag: "Consigna", text: "" },
-            { cat: 5, title: "Bregman", tag: "Pensamiento", text: "" },
-            { cat: 5, title: "Silvestri", tag: "Pensamiento", text: "" },
-            { cat: 5, title: "Preciado", tag: "Pensamiento", text: "" },
-            { cat: 5, title: "Hegel", tag: "Pensamiento", text: "" },
-
-            // 7. La cultura como arma
-            { cat: 6, title: "Nujabes/Lofi", tag: "Música", text: "" },
-            { cat: 6, title: "RATM", tag: "Música", text: "" },
-            { cat: 6, title: "Milo J", tag: "Música", text: "" },
-            { cat: 6, title: "Duki", tag: "Música", text: "" },
-            { cat: 6, title: "El Noba y L-Gante", tag: "Música", text: "" },
-            { cat: 6, title: "Luca Prodan", tag: "Música", text: "" },
-            { cat: 6, title: "Indio Solari", tag: "Música", text: "" },
-            { cat: 6, title: "Sandro", tag: "Música", text: "" },
-            { cat: 6, title: "Leo Mattioli", tag: "Música", text: "" },
-            { cat: 6, title: "Ozuna", tag: "Música", text: "" },
-            { cat: 6, title: "Himno", tag: "Música", text: "" },
-            { cat: 6, title: "Canciones ancestrales", tag: "Música", text: "" },
-            { cat: 6, title: "Canciones populares", tag: "Música", text: "" },
-            { cat: 6, title: "Esperando la carroza", tag: "Pantalla", text: "" },
-            { cat: 6, title: "Autopsia de alien en Chiche Gelblung", tag: "[meme] Pantalla", text: "" },
-            { cat: 6, title: "Tortugas Ninja", tag: "Pantalla", text: "" },
-            { cat: 6, title: "Muad’Dib", tag: "Pantalla", text: "" },
-            { cat: 6, title: "The Northman", tag: "Pantalla", text: "" },
-            { cat: 6, title: "Ready Player One", tag: "Pantalla", text: "" },
-            { cat: 6, title: "Mickey 17", tag: "Pantalla", text: "" },
-            { cat: 6, title: "Snake", tag: "Juego", text: "" },
-            { cat: 6, title: "Counter", tag: "Juego", text: "" },
-            { cat: 6, title: "PES", tag: "Juego", text: "" },
-            { cat: 6, title: "Pump It Up", tag: "Juego", text: "" },
-            { cat: 6, title: "Mario/Sonic", tag: "Juego", text: "" },
-            { cat: 6, title: "Street Fighter/Mortal Kombat", tag: "Juego", text: "" },
-            { cat: 6, title: "Cyberpunk 2077", tag: "Juego", text: "" },
-
-            // 8. Mística y lo sagrado
-            { cat: 7, title: "Virgen de Luján", tag: "Sagrado", text: "" },
-            { cat: 7, title: "Virgen María", tag: "Sagrado", text: "" },
-            { cat: 7, title: "Iemanjá", tag: "Sagrado", text: "" },
-            { cat: 7, title: "Santos católicas", tag: "Sagrado", text: "" },
-            { cat: 7, title: "Constantine", tag: "Mística", text: "" },
-            { cat: 7, title: "Mahoraga", tag: "Mística", text: "" },
-            { cat: 7, title: "Oxum", tag: "Sagrado", text: "" },
-            { cat: 7, title: "Intuición y Revelación", tag: "Sagrado", text: "" },
-            { cat: 7, title: "Espíritus", tag: "Sagrado", text: "" },
-
-            // 9. Países y geopolítica
-            { cat: 8, title: "China", tag: "Geopolítica", text: "" },
-            { cat: 8, title: "EEUU", tag: "Geopolítica", text: "" },
-            { cat: 8, title: "Rusia", tag: "Geopolítica", text: "" },
-            { cat: 8, title: "Brasil", tag: "Geopolítica", text: "" },
-            { cat: 8, title: "Argentina", tag: "Geopolítica", text: "" },
-            { cat: 8, title: "Territorios", tag: "Geopolítica", text: "" },
-
-            // 10. Llaves (Poderes de acceso)
-            { cat: 9, title: "Llave del Umbral", tag: "LLAVE DE PODER", text: "" },
-            { cat: 9, title: "Llave de la Memoria", tag: "LLAVE DE PODER", text: "" },
-            { cat: 9, title: "Llave del Cuerpo", tag: "LLAVE DE PODER", text: "" },
-            { cat: 9, title: "Llave de la Calle", tag: "LLAVE DE PODER", text: "" },
-            { cat: 9, title: "Llave del Fuego", tag: "LLAVE DE PODER", text: "" },
-            { cat: 9, title: "Llave del Monte", tag: "LLAVE DE PODER", text: "" }
+            "1. Cuerpo y vínculos", "2. Estados y tránsitos internos", "3. Ciudad y movilidad",
+            "4. Naturaleza", "5. Los Enemigos", "6. Resistencias, luchas y referentes",
+            "7. La cultura como arma", "8. Mística y lo sagrado", "9. Países y geopolítica", "10. Llaves"
         ];
 
         let deck = [];
-        let currentSpreadConfig = null;
-        let selectedCardsForSpread = [];
 
-        // Inicialización
-        window.onload = function() {
-            loadDeckFromStorage();
+        // INICIO AUTOMÁTICO: LEE EL MAZO.JSON PRIMERO DE FORMA DIRECTA
+        window.onload = async function() {
+            await cargarMazoRemoto();
             initCategorySelects();
             updateCounts();
             renderGallery();
@@ -757,15 +300,28 @@ Solo queda tomar el poder.`
             }
         };
 
+        async function cargarMazoRemoto() {
+            try {
+                const respuesta = await fetch('mazo.json');
+                if (respuesta.ok) {
+                    const datosMazo = await respuesta.json();
+                    if (Array.isArray(datosMazo) && datosMazo.length > 0) {
+                        deck = datosMazo;
+                        saveDeckToStorage();
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.log("No se pudo cargar mazo.json remoto, usando respaldo local.");
+            }
+            loadDeckFromStorage();
+        }
+
         function buildDefaultDeck() {
-            return RAW_INVENTORY.map((item, idx) => ({
-                id: 'card_' + (idx + 1),
-                title: item.title,
-                category: CATEGORIES[item.cat],
-                tag: item.tag || '',
-                image: '',
-                text: item.text
-            }));
+            return [
+                { id: 'card_1', title: "Dormir (El derecho a la pereza)", category: CATEGORIES[0], tag: "Necesidad", image: "", text: "Descansa de la productividad, desconéctate, glorifica tu reposo en la pereza y quietud." },
+                { id: 'card_2', title: "Eva 01 [T]", category: CATEGORIES[1], tag: "[T] Tránsito", image: "", text: "Eva 01 berserker\nEscuchar el llamado, el latido de auxilio." }
+            ];
         }
 
         function loadDeckFromStorage() {
@@ -778,9 +334,7 @@ Solo queda tomar el poder.`
                         return;
                     }
                 }
-            } catch (e) {
-                console.error("Error leyendo localStorage:", e);
-            }
+            } catch (e) {}
             deck = buildDefaultDeck();
             saveDeckToStorage();
         }
@@ -791,88 +345,46 @@ Solo queda tomar el poder.`
                 updateCounts();
                 return true;
             } catch (e) {
-                showToast('El almacenamiento del navegador está lleno. Exportá tu mazo en JSON.', 'error');
                 return false;
             }
         }
 
         function updateCounts() {
-            document.getElementById('total-cards-badge').textContent = deck.length;
+            const badge = document.getElementById('total-cards-badge');
+            if(badge) badge.textContent = deck.length;
         }
 
         function initCategorySelects() {
             const galSelect = document.getElementById('gallery-cat-select');
             const editSelect = document.getElementById('edit-category');
-            
             CATEGORIES.forEach(cat => {
-                if (galSelect) {
-                    const opt1 = document.createElement('option');
-                    opt1.value = cat;
-                    opt1.textContent = cat;
-                    galSelect.appendChild(opt1);
-                }
-
-                if (editSelect) {
-                    const opt2 = document.createElement('option');
-                    opt2.value = cat;
-                    opt2.textContent = cat;
-                    editSelect.appendChild(opt2);
-                }
+                if (galSelect) { const opt1 = document.createElement('option'); opt1.value = cat; opt1.textContent = cat; galSelect.appendChild(opt1); }
+                if (editSelect) { const opt2 = document.createElement('option'); opt2.value = cat; opt2.textContent = cat; editSelect.appendChild(opt2); }
             });
         }
 
-        // Navegación entre pestañas
         function switchTab(tabName) {
             ['tirada', 'galeria', 'editor'].forEach(t => {
                 document.getElementById('tab-' + t).classList.add('hidden');
-                const btn = document.getElementById('nav-' + t);
-                btn.className = 'nav-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all text-purple-200 hover:text-white hover:bg-panelLight cursor-pointer';
+                document.getElementById('nav-' + t).className = 'nav-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all text-purple-200 hover:text-white hover:bg-panelLight cursor-pointer';
             });
-
             document.getElementById('tab-' + tabName).classList.remove('hidden');
-            const activeBtn = document.getElementById('nav-' + tabName);
-            activeBtn.className = 'nav-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-semibold transition-all bg-gold text-void shadow-md cursor-pointer';
-
+            document.getElementById('nav-' + tabName).className = 'nav-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-semibold transition-all bg-gold text-void shadow-md cursor-pointer';
             if (tabName === 'galeria') renderGallery();
             if (tabName === 'editor') populateEditorDropdown();
         }
 
         function getFallbackCardArt(category, title) {
             const catNum = category.split('.')[0] || '✦';
-            const icons = {
-                '1': '♥', '2': '◈', '3': '❖', '4': '❀', '5': '⚔',
-                '6': '✊', '7': '♫', '8': '☀☾', '9': '⊕', '10': '🗝'
-            };
-            const symbol = icons[catNum] || '✦';
-            const cleanTitle = (title || '').replace(/[<>&'"]/g, '').substring(0, 26);
-            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240">
-                <defs>
-                    <radialGradient id="g" cx="50%" cy="50%" r="65%">
-                        <stop offset="0%" stop-color="#3b1d66"/>
-                        <stop offset="100%" stop-color="#130921"/>
-                    </radialGradient>
-                </defs>
-                <rect width="400" height="240" fill="url(#g)"/>
-                <circle cx="200" cy="105" r="54" fill="none" stroke="#eab308" stroke-width="1.5" stroke-opacity="0.45"/>
-                <circle cx="200" cy="105" r="44" fill="none" stroke="#eab308" stroke-width="0.8" stroke-dasharray="4 4" stroke-opacity="0.6"/>
-                <text x="200" y="118" font-family="serif" font-size="38" fill="#eab308" text-anchor="middle">${symbol}</text>
-                <text x="200" y="198" font-family="monospace" font-size="13" fill="#e9d5ff" text-anchor="middle" opacity="0.85">${cleanTitle}</text>
-            </svg>`;
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240"><rect width="400" height="240" fill="#130921"/><text x="200" y="120" font-family="serif" font-size="30" fill="#eab308" text-anchor="middle">${catNum}</text></svg>`;
             return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
         }
 
-        // =========================================================
-        // PESTAÑA 1: SELECCIÓN AUTOMÁTICA DE CARTAS ESCRITAS
-        // =========================================================
         function pinQuestion() {
             const val = document.getElementById('question-input').value.trim();
-            if (!val) {
-                showToast('Escribí una pregunta primero.', 'info');
-                return;
-            }
+            if (!val) return;
             document.getElementById('pinned-question-text').textContent = `“${val}”`;
             document.getElementById('pinned-question-box').classList.remove('hidden');
-            showToast('Consulta fijada en la mesa.', 'success');
         }
 
         function clearPinnedQuestion() {
@@ -881,383 +393,97 @@ Solo queda tomar el poder.`
         }
 
         function initSpreadDealing() {
-            if (deck.length === 0) {
-                showToast('No hay cartas en el mazo.', 'error');
-                return;
-            }
-
-            const qVal = document.getElementById('question-input').value.trim();
-            if (qVal) {
-                document.getElementById('pinned-question-text').textContent = `“${qVal}”`;
-                document.getElementById('pinned-question-box').classList.remove('hidden');
-            }
-
-            // Filtrar únicamente las cartas que ya tienen texto escrito
             const writtenCards = deck.filter(c => c.text && c.text.trim() !== '');
-            if (writtenCards.length === 0) {
-                showToast('Aún no hay cartas con texto escrito para repartir.', 'error');
-                return;
-            }
-
-            const spreadType = document.getElementById('spread-selector').value;
-            let positions = [];
-
-            if (spreadType === '1') positions = ['Mensaje del día'];
-            else if (spreadType === 'energia') positions = ['Energía actual', 'Consejo'];
-            else if (spreadType === '3') positions = ['Pasado', 'Presente', 'Horizonte'];
-            else if (spreadType === 'tactica') positions = ['Lo que uno tiene débil', 'Lo fuerte donde defender', 'Qué hay que jerarquizar', 'Acción táctica'];
-            else if (spreadType === 'dimensiones') positions = ['Pensamiento', 'Sentimientos', 'Intención', 'Acción'];
-            else if (spreadType === 'caminos') positions = ['Situación', 'Desafío', 'Consejo', 'Posible resultado'];
-            else if (spreadType === 'llave') {
-                const keys = writtenCards.filter(c => c.category.startsWith('10.'));
-                const others = writtenCards.filter(c => !c.category.startsWith('10.'));
-                const three = pickRandom(others.length >= 3 ? others : writtenCards, 3);
-                const oneKey = keys.length > 0 ? pickRandom(keys, 1)[0] : pickRandom(writtenCards, 1)[0];
-                selectedCardsForSpread = [...three, oneKey];
-                
-                document.getElementById('table-empty').classList.add('hidden');
-                document.getElementById('deck-pool-grid').classList.add('hidden');
-                document.getElementById('selection-banner').classList.add('hidden');
-                renderFinalSpread(positions);
-                return;
-            }
-
-            const requiredCount = positions.length;
-            if (writtenCards.length < requiredCount) {
-                showToast(`Esta tirada requiere ${requiredCount} cartas escritas (tenés ${writtenCards.length}).`, 'error');
-                return;
-            }
-
-            // Seleccionar aleatoriamente entre las cartas escritas
-            selectedCardsForSpread = pickRandom(writtenCards, requiredCount);
-
+            if (writtenCards.length === 0) return;
+            selectedCardsForSpread = pickRandom(writtenCards, 3);
             document.getElementById('table-empty').classList.add('hidden');
             document.getElementById('deck-pool-grid').classList.add('hidden');
-            document.getElementById('selection-banner').classList.add('hidden');
-
-            renderFinalSpread(positions);
+            renderFinalSpread(['Pasado', 'Presente', 'Horizonte']);
         }
 
+        let selectedCardsForSpread = [];
         function renderFinalSpread(positions) {
             const grid = document.getElementById('dealt-grid');
             document.getElementById('selected-slots-container').classList.remove('hidden');
             document.getElementById('table-controls').classList.remove('hidden');
-
-            let gridClasses = 'w-full max-w-sm mx-auto grid grid-cols-1 gap-6 items-stretch justify-items-center';
-            if (selectedCardsForSpread.length === 2) gridClasses = 'w-full max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10 items-stretch justify-items-center';
-            else if (selectedCardsForSpread.length === 3) gridClasses = 'w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch justify-items-center';
-            else if (selectedCardsForSpread.length === 4) gridClasses = 'w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch justify-items-center';
-            grid.className = gridClasses;
-
-            grid.innerHTML = '';
-
-            selectedCardsForSpread.forEach((card, i) => {
-                const posName = positions[i] || `Posición ${i + 1}`;
-                const isKey = card.category.startsWith('10.');
-                const imgSource = card.image ? card.image : getFallbackCardArt(card.category, card.title);
-                const hasText = card.text && card.text.trim() !== '';
-
-                const col = document.createElement('div');
-                col.className = 'w-full max-w-[310px] flex flex-col items-center gap-3 animate-deal';
-                col.style.animationDelay = `${i * 90}ms`;
-
-                col.innerHTML = `
-                    <span class="text-xs font-mono uppercase tracking-widest px-3 py-1 rounded-full ${isKey ? 'bg-gold/20 text-gold border border-gold/50 font-bold' : 'bg-panel text-gold border border-gold/25'}">
-                        ${posName}
-                    </span>
-
-                    <div onclick="this.querySelector('.card-flipper').classList.toggle('is-flipped')" class="perspective-container w-full h-[460px] cursor-pointer group select-none">
+            grid.innerHTML = selectedCardsForSpread.map((card, i) => `
+                <div class="w-full max-w-[310px] flex flex-col items-center gap-3 animate-deal">
+                    <span class="text-xs font-mono uppercase px-3 py-1 rounded-full bg-panel text-gold border border-gold/25">${positions[i]}</span>
+                    <div onclick="this.querySelector('.card-flipper').classList.toggle('is-flipped')" class="perspective-container w-full h-[460px] cursor-pointer group">
                         <div class="card-flipper">
-                            
-                            <!-- DORSO (Sol, Luna y Mercurio) -->
-                            <div class="card-face card-back-design border-2 ${isKey ? 'border-gold' : 'border-gold/50'} p-4 flex flex-col items-center justify-center text-center shadow-2xl group-hover:border-gold group-hover:shadow-[0_0_25px_rgba(234,179,8,0.25)] transition-all">
-                                <div class="w-full h-full border border-gold/30 rounded-xl flex flex-col items-center justify-center p-4">
-                                    <div class="w-16 h-16 rounded-full bg-void/80 border border-gold/50 flex items-center justify-center text-gold mb-4 group-hover:scale-110 transition-transform">
-                                        <span class="text-2xl">☀☾☿</span>
-                                    </div>
-                                    <p class="font-serif text-sm font-bold tracking-widest text-gold uppercase">Oráculo Periférico</p>
-                                    <span class="mt-2 text-xs font-mono text-purple-200/80 bg-void/60 px-3 py-1 rounded-lg border border-gold/20">${posName}</span>
-                                    <p class="mt-5 text-[11px] font-mono text-gold/80 animate-pulse">Tocá para revelar</p>
-                                </div>
+                            <div class="card-face card-back-design border-2 border-gold/50 p-4 flex flex-col items-center justify-center text-center shadow-2xl">
+                                <span class="text-2xl text-gold">☀☾☿</span>
                             </div>
-
-                            <!-- FRENTE -->
-                            <div class="card-face card-front bg-panel border-2 ${isKey ? 'border-gold shadow-[0_0_30px_rgba(234,179,8,0.25)]' : 'border-gold/50 shadow-2xl'} flex flex-col justify-between text-left">
-                                <div>
-                                    <div class="px-3.5 py-2 bg-void/90 border-b border-gold/20 flex items-center justify-between gap-2">
-                                        <span class="text-[10px] font-mono text-gold truncate">${card.category}</span>
-                                        ${card.tag ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-panelLight text-purple-200 shrink-0">${card.tag}</span>` : ''}
-                                    </div>
-                                    <div class="h-40 w-full bg-void overflow-hidden border-b border-gold/20">
-                                        <img src="${imgSource}" alt="${card.title}" onerror="this.src='${getFallbackCardArt(card.category, card.title)}'" class="w-full h-full object-cover">
-                                    </div>
-                                </div>
-
-                                <div class="p-4 flex-1 flex flex-col justify-between overflow-y-auto">
-                                    <div>
-                                        <h3 class="font-serif text-base sm:text-lg font-bold text-white leading-snug mb-2">${card.title}</h3>
-                                        <p class="text-xs sm:text-sm text-purple-100/90 leading-relaxed whitespace-pre-line">${card.text}</p>
-                                    </div>
-                                </div>
-
-                                <div class="px-4 py-2 bg-void/80 border-t border-gold/20 flex items-center justify-between">
-                                    <span class="text-[10px] font-mono text-purple-300/60">Clic para voltear</span>
-                                    <button type="button" onclick="event.stopPropagation(); openDetailModal('${card.id}', '${posName}')" class="text-xs font-mono text-gold hover:text-yellow-300 underline cursor-pointer">Ampliar lectura</button>
-                                </div>
+                            <div class="card-face card-front bg-panel border-2 border-gold/50 flex flex-col justify-between text-left p-4">
+                                <h3 class="font-serif text-lg font-bold text-white">${card.title}</h3>
+                                <p class="text-xs text-purple-100/90 whitespace-pre-line">${card.text}</p>
                             </div>
-
                         </div>
                     </div>
-                `;
-                grid.appendChild(col);
-            });
-
-            showToast('Tirada repartida automáticamente. ¡Hacé clic en las cartas para revelarlas!', 'success');
+                </div>
+            `).join('');
         }
 
         function resetSpread() {
             document.getElementById('selected-slots-container').classList.add('hidden');
             document.getElementById('table-controls').classList.add('hidden');
             document.getElementById('table-empty').classList.remove('hidden');
-            currentSpreadConfig = null;
-            selectedCardsForSpread = [];
         }
 
         function pickRandom(arr, count) {
-            const copy = [...arr];
-            for (let i = copy.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [copy[i], copy[j]] = [copy[j], copy[i]];
-            }
-            return copy.slice(0, Math.min(count, copy.length));
+            return [...arr].sort(() => 0.5 - Math.random()).slice(0, count);
         }
 
-        // =========================================================
-        // PESTAÑA 2: GALERÍA COMPLETA
-        // =========================================================
         function renderGallery() {
-            const search = document.getElementById('gallery-search-input').value.toLowerCase().trim();
-            const catFilter = document.getElementById('gallery-cat-select').value;
             const container = document.getElementById('gallery-container');
-
-            const filtered = deck.filter(c => {
-                const matchesCat = catFilter === 'all' || c.category === catFilter;
-                const matchesText = !search || 
-                    c.title.toLowerCase().includes(search) || 
-                    c.text.toLowerCase().includes(search) ||
-                    (c.tag && c.tag.toLowerCase().includes(search));
-                return matchesCat && matchesText;
-            });
-
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="col-span-full text-center py-12 text-purple-200/70 font-mono text-sm">No se encontraron cartas con ese filtro.</div>`;
-                return;
-            }
-
-            container.innerHTML = filtered.map(card => {
-                const imgSource = card.image ? card.image : getFallbackCardArt(card.category, card.title);
-                const isKey = card.category.startsWith('10.');
-                const hasText = card.text && card.text.trim() !== '';
-
-                return `
-                    <article onclick="openDetailModal('${card.id}')" class="bg-panel border ${isKey ? 'border-gold/60' : 'border-gold/25'} hover:border-gold rounded-2xl overflow-hidden shadow-lg hover:shadow-[0_0_25px_rgba(234,179,8,0.18)] transition flex flex-col justify-between cursor-pointer group">
-                        <div>
-                            <div class="px-3.5 py-2 bg-void/80 border-b border-gold/15 flex items-center justify-between gap-2">
-                                <span class="text-[10px] font-mono text-gold truncate">${card.category}</span>
-                                ${card.tag ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-panelLight text-purple-200 shrink-0">${card.tag}</span>` : ''}
-                            </div>
-                            <div class="h-40 bg-void overflow-hidden border-b border-gold/15">
-                                <img src="${imgSource}" alt="${card.title}" onerror="this.src='${getFallbackCardArt(card.category, card.title)}'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            </div>
-                            <div class="p-4 space-y-2">
-                                <h3 class="font-serif text-base font-bold text-white group-hover:text-gold transition">${card.title}</h3>
-                                ${hasText ? 
-                                    `<p class="text-xs text-purple-100/80 line-clamp-4 leading-relaxed whitespace-pre-line">${card.text}</p>` :
-                                    `<span class="text-[11px] font-mono text-gold/60 italic bg-void/60 px-2 py-1 rounded border border-gold/15 inline-block">Pendiente de escritura</span>`
-                                }
-                            </div>
-                        </div>
-                        <div class="px-4 py-2.5 bg-void/50 border-t border-gold/15 flex items-center justify-between">
-                            <span class="text-[11px] font-mono text-gold/90">${hasText ? 'Leer completa →' : 'Ver detalle'}</span>
-                            <button type="button" onclick="event.stopPropagation(); jumpToEdit('${card.id}')" class="text-[11px] font-mono text-purple-300 hover:text-white underline cursor-pointer">
-                                Editar
-                            </button>
-                        </div>
-                    </article>
-                `;
-            }).join('');
+            container.innerHTML = deck.map(card => `
+                <div onclick="openDetailModal('${card.id}')" class="bg-panel border border-gold/25 rounded-2xl overflow-hidden p-4 cursor-pointer">
+                    <h3 class="font-serif text-base font-bold text-white">${card.title}</h3>
+                    <p class="text-xs text-purple-100/80 line-clamp-3 mt-2">${card.text || 'Pendiente'}</p>
+                </div>
+            `).join('');
         }
 
-        // Modal de Lectura Ampliada
-        function openDetailModal(cardId, positionLabel = '') {
+        function openDetailModal(cardId) {
             const card = deck.find(c => c.id === cardId);
             if (!card) return;
-
-            const imgSource = card.image ? card.image : getFallbackCardArt(card.category, card.title);
-            const hasText = card.text && card.text.trim() !== '';
-            const body = document.getElementById('detail-modal-body');
-
-            body.innerHTML = `
-                <div class="bg-void px-5 py-3.5 border-b border-gold/30 flex items-center justify-between gap-2">
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <span class="text-xs font-mono text-gold font-semibold">${card.category}</span>
-                        ${positionLabel ? `<span class="text-xs font-mono px-2.5 py-0.5 rounded-full bg-gold text-void font-bold">${positionLabel}</span>` : ''}
-                    </div>
-                    <button onclick="closeDetailModal()" class="text-purple-200 hover:text-white text-lg px-2 cursor-pointer">✕</button>
-                </div>
-                <div class="max-h-72 w-full bg-void overflow-hidden border-b border-gold/25 flex items-center justify-center">
-                    <img src="${imgSource}" alt="${card.title}" onerror="this.src='${getFallbackCardArt(card.category, card.title)}'" class="w-full max-h-72 object-contain">
-                </div>
-                <div class="p-6 space-y-4 max-h-[55vh] overflow-y-auto">
-                    <div class="flex items-center justify-between gap-2">
-                        <h2 class="font-serif text-2xl font-bold text-gold">${card.title}</h2>
-                        ${card.tag ? `<span class="text-xs font-mono px-2.5 py-1 rounded-lg bg-panelLight text-purple-200 border border-gold/25">${card.tag}</span>` : ''}
-                    </div>
-                    ${hasText ? 
-                        `<p class="text-sm sm:text-base text-purple-50 leading-relaxed whitespace-pre-line">${card.text}</p>` :
-                        `<p class="text-sm font-mono text-gold/80 italic text-center py-6">Esta carta aún está pendiente de escritura comunitaria.</p>`
-                    }
-                </div>
-                <div class="px-6 py-3.5 bg-void/80 border-t border-gold/25 flex justify-between items-center">
-                    <button onclick="closeDetailModal(); jumpToEdit('${card.id}')" class="text-xs font-mono text-gold hover:underline cursor-pointer">
-                        ⚙ Editar / Escribir texto de esta carta
-                    </button>
-                    <button onclick="closeDetailModal()" class="px-4 py-1.5 rounded-xl bg-panelLight hover:bg-purple-800 text-white text-xs font-semibold cursor-pointer">
-                        Cerrar
-                    </button>
+            document.getElementById('detail-modal-body').innerHTML = `
+                <div class="p-6 space-y-4">
+                    <h2 class="font-serif text-2xl font-bold text-gold">${card.title}</h2>
+                    <p class="text-white whitespace-pre-line">${card.text}</p>
+                    <button onclick="closeDetailModal()" class="px-4 py-2 bg-gold text-void font-bold rounded-xl">Cerrar</button>
                 </div>
             `;
-
-            const modal = document.getElementById('detail-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            document.getElementById('detail-modal').classList.remove('hidden');
+            document.getElementById('detail-modal').classList.add('flex');
         }
 
         function closeDetailModal() {
-            const modal = document.getElementById('detail-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            document.getElementById('detail-modal').classList.add('hidden');
+            document.getElementById('detail-modal').classList.remove('flex');
         }
 
-        // =========================================================
-        // PESTAÑA 3: CARGAR / EDITAR (GESTOR DIRECTO)
-        // =========================================================
         function populateEditorDropdown() {
-            const filterText = document.getElementById('editor-filter-input').value.toLowerCase().trim();
             const selector = document.getElementById('editor-card-selector');
-            const currentVal = selector.value;
-
-            const matches = deck.filter(c => 
-                !filterText || 
-                c.title.toLowerCase().includes(filterText) || 
-                c.category.toLowerCase().includes(filterText)
-            );
-
-            document.getElementById('selector-count-label').textContent = matches.length;
-
-            selector.innerHTML = matches.map(c => 
-                `<option value="${c.id}">${c.category} — ${c.title}</option>`
-            ).join('');
-
-            if (matches.some(c => c.id === currentVal)) {
-                selector.value = currentVal;
-            } else if (matches.length > 0) {
-                selector.value = matches[0].id;
-                loadSelectedCardIntoForm();
-            }
+            selector.innerHTML = deck.map(c => `<option value="${c.id}">${c.category} — ${c.title}</option>`).join('');
+            document.getElementById('selector-count-label').textContent = deck.length;
         }
 
         function loadSelectedCardIntoForm() {
-            const id = document.getElementById('editor-card-selector').value;
-            const card = deck.find(c => c.id === id);
+            const card = deck.find(c => c.id === document.getElementById('editor-card-selector').value);
             if (!card) return;
-
             document.getElementById('edit-id').value = card.id;
             document.getElementById('edit-title').value = card.title;
             document.getElementById('edit-category').value = card.category;
             document.getElementById('edit-tag').value = card.tag || '';
             document.getElementById('edit-image-url').value = card.image || '';
             document.getElementById('edit-text').value = card.text || '';
-
-            document.getElementById('editor-mode-badge').textContent = 'Editando Carta Existente';
-            document.getElementById('btn-delete-card').classList.remove('hidden');
-
-            refreshImagePreview(card.image, card.category, card.title);
         }
 
         function startNewCard() {
             document.getElementById('edit-id').value = '';
             document.getElementById('edit-title').value = '';
-            document.getElementById('edit-category').value = CATEGORIES[0];
-            document.getElementById('edit-tag').value = '';
-            document.getElementById('edit-image-url').value = '';
             document.getElementById('edit-text').value = '';
-            document.getElementById('edit-file-input').value = '';
-
-            document.getElementById('editor-mode-badge').textContent = 'Creando Carta Nueva';
-            document.getElementById('btn-delete-card').classList.add('hidden');
-            refreshImagePreview('', CATEGORIES[0], 'Nueva Carta');
-            document.getElementById('edit-title').focus();
-            showToast('Formulario listo para crear una carta nueva.', 'info');
-        }
-
-        function jumpToEdit(cardId) {
-            switchTab('editor');
-            document.getElementById('editor-filter-input').value = '';
-            populateEditorDropdown();
-            document.getElementById('editor-card-selector').value = cardId;
-            loadSelectedCardIntoForm();
-        }
-
-        // Compresión de imagen a Base64 para localStorage
-        function processImageFile(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const MAX_W = 520;
-                    const scale = img.width > MAX_W ? MAX_W / img.width : 1;
-                    canvas.width = img.width * scale;
-                    canvas.height = img.height * scale;
-
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.78);
-                    document.getElementById('edit-image-url').value = compressedBase64;
-                    refreshImagePreview(compressedBase64, document.getElementById('edit-category').value, document.getElementById('edit-title').value);
-                    showToast('Imagen cargada y optimizada. Apretá "Guardar Cambios".', 'success');
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function updatePreviewFromInput() {
-            const url = document.getElementById('edit-image-url').value.trim();
-            refreshImagePreview(url, document.getElementById('edit-category').value, document.getElementById('edit-title').value);
-        }
-
-        function removeCustomImage() {
-            document.getElementById('edit-image-url').value = '';
-            document.getElementById('edit-file-input').value = '';
-            refreshImagePreview('', document.getElementById('edit-category').value, document.getElementById('edit-title').value);
-        }
-
-        function refreshImagePreview(imgUrl, category, title) {
-            const previewEl = document.getElementById('edit-image-preview');
-            const removeBtn = document.getElementById('btn-remove-img');
-            if (imgUrl && imgUrl.trim() !== '') {
-                previewEl.src = imgUrl;
-                removeBtn.classList.remove('hidden');
-            } else {
-                previewEl.src = getFallbackCardArt(category, title);
-                removeBtn.classList.add('hidden');
-            }
         }
 
         function handleSaveCard(e) {
@@ -1269,58 +495,26 @@ Solo queda tomar el poder.`
             const image = document.getElementById('edit-image-url').value.trim();
             const text = document.getElementById('edit-text').value.trim();
 
-            if (!title) {
-                showToast('Completá al menos el título de la carta.', 'error');
-                return;
-            }
-
             if (id) {
                 const idx = deck.findIndex(c => c.id === id);
-                if (idx !== -1) {
-                    deck[idx] = { ...deck[idx], title, category, tag, image, text };
-                }
+                if (idx !== -1) deck[idx] = { ...deck[idx], title, category, tag, image, text };
             } else {
-                const newId = 'card_' + Date.now();
-                deck.unshift({ id: newId, title, category, tag, image, text });
-                document.getElementById('edit-id').value = newId;
+                deck.unshift({ id: 'card_' + Date.now(), title, category, tag, image, text });
             }
-
-            if (saveDeckToStorage()) {
-                populateEditorDropdown();
-                if (document.getElementById('edit-id').value) {
-                    document.getElementById('editor-card-selector').value = document.getElementById('edit-id').value;
-                }
-                renderGallery();
-                showToast(`✓ Carta "${title}" guardada correctamente.`, 'success');
-            }
+            saveDeckToStorage();
+            populateEditorDropdown();
+            renderGallery();
+            alert('Carta guardada con éxito.');
         }
 
-        function askDeleteCurrentCard() {
-            const id = document.getElementById('edit-id').value;
-            const card = deck.find(c => c.id === id);
-            if (!card) return;
-
-            openConfirm('Eliminar carta', `¿Querés eliminar "${card.title}" del mazo?`, () => {
-                deck = deck.filter(c => c.id !== id);
-                saveDeckToStorage();
-                populateEditorDropdown();
-                renderGallery();
-                if (deck.length > 0) loadSelectedCardIntoForm();
-                else startNewCard();
-                showToast('Carta eliminada.', 'info');
-            });
-        }
-
-        // Exportar / Importar / Restaurar
         function exportDeckJSON() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(deck, null, 2));
             const a = document.createElement('a');
             a.setAttribute("href", dataStr);
-            a.setAttribute("download", "oraculo_periferico_mazo.json");
+            a.setAttribute("download", "mazo.json");
             document.body.appendChild(a);
             a.click();
             a.remove();
-            showToast('Archivo .json descargado.', 'success');
         }
 
         function importDeckJSON(event) {
@@ -1328,77 +522,20 @@ Solo queda tomar el poder.`
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
-                try {
-                    const imported = JSON.parse(e.target.result);
-                    if (Array.isArray(imported) && imported.length > 0) {
-                        deck = imported;
-                        saveDeckToStorage();
-                        populateEditorDropdown();
-                        loadSelectedCardIntoForm();
-                        renderGallery();
-                        showToast(`Se importaron ${deck.length} cartas correctamente.`, 'success');
-                    } else {
-                        showToast('El archivo JSON no tiene un formato válido.', 'error');
-                    }
-                } catch (err) {
-                    showToast('Error al leer el archivo JSON.', 'error');
-                }
+                deck = JSON.parse(e.target.result);
+                saveDeckToStorage();
+                populateEditorDropdown();
+                renderGallery();
+                alert('Mazo importado correctamente.');
             };
             reader.readAsText(file);
         }
 
         function askResetFactory() {
-            openConfirm(
-                'Restaurar Mazo de Fábrica',
-                'Esto volverá a cargar las cartas originales. ¿Continuar?',
-                () => {
-                    deck = buildDefaultDeck();
-                    saveDeckToStorage();
-                    populateEditorDropdown();
-                    loadSelectedCardIntoForm();
-                    renderGallery();
-                    showToast('Mazo de fábrica restaurado con éxito.', 'success');
-                }
-            );
-        }
-
-        // =========================================================
-        // UTILIDADES UI (TOAST Y MODAL DE CONFIRMACIÓN)
-        // =========================================================
-        function showToast(message, type = 'info') {
-            const box = document.getElementById('toast-box');
-            const toast = document.createElement('div');
-            const colors = {
-                success: 'bg-emerald-950/95 border-emerald-500 text-emerald-100',
-                error: 'bg-rose-950/95 border-rose-500 text-rose-100',
-                info: 'bg-panel border-gold text-yellow-100'
-            };
-            toast.className = `pointer-events-auto px-4 py-3 rounded-xl border shadow-2xl text-xs sm:text-sm font-medium transition-all ${colors[type] || colors.info}`;
-            toast.textContent = message;
-            box.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 300);
-            }, 3400);
-        }
-
-        function openConfirm(title, message, onConfirm) {
-            const modal = document.getElementById('confirm-modal');
-            document.getElementById('confirm-title').textContent = title;
-            document.getElementById('confirm-msg').textContent = message;
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-
-            const okBtn = document.getElementById('confirm-ok');
-            const cancelBtn = document.getElementById('confirm-cancel');
-
-            const cleanup = () => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            };
-
-            okBtn.onclick = () => { cleanup(); onConfirm(); };
-            cancelBtn.onclick = cleanup;
+            deck = buildDefaultDeck();
+            saveDeckToStorage();
+            populateEditorDropdown();
+            renderGallery();
         }
     </script>
 </body>
