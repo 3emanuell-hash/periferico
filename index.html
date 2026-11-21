@@ -38,7 +38,7 @@
 
     header {
       border-bottom: 1px solid var(--border);
-      padding: 1.2rem 1.5rem;
+      padding: 1.1rem 1.5rem;
       background: rgba(11, 11, 15, 0.88);
       backdrop-filter: blur(10px);
       position: sticky;
@@ -47,7 +47,7 @@
     }
 
     .header-inner {
-      max-width: 1240px;
+      max-width: 1280px;
       margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
@@ -76,7 +76,7 @@
 
     .brand h1 {
       font-family: 'Cinzel', serif;
-      font-size: 1.32rem;
+      font-size: 1.3rem;
       letter-spacing: 0.06em;
       color: var(--gold);
       font-weight: 700;
@@ -119,10 +119,10 @@
     }
 
     main {
-      max-width: 1240px;
+      max-width: 1280px;
       width: 100%;
       margin: 0 auto;
-      padding: 1.65rem 1.5rem 3rem;
+      padding: 1.5rem 1.5rem 3rem;
       flex: 1;
     }
 
@@ -136,7 +136,7 @@
       border: 1px solid var(--border);
       padding: 0.7rem 1rem;
       border-radius: var(--radius);
-      margin-bottom: 1.65rem;
+      margin-bottom: 1.5rem;
       font-size: 0.82rem;
     }
 
@@ -144,7 +144,9 @@
       display: flex;
       align-items: center;
       gap: 0.6rem;
-      color: var(--text-muted);
+      color: #c8c5d4;
+      flex: 1;
+      min-width: 260px;
     }
 
     .dot {
@@ -372,7 +374,7 @@
 
     .card-art {
       width: 100%;
-      aspect-ratio: 4 / 5;
+      aspect-ratio: 4 / 4.2;
       background: #0e0e14;
       position: relative;
       overflow: hidden;
@@ -393,11 +395,11 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 1.5rem;
+      padding: 1.25rem;
       text-align: center;
       background: radial-gradient(circle, #1e1b2e 0%, #0e0e14 100%);
       color: var(--gold-dim);
-      gap: 0.55rem;
+      gap: 0.45rem;
     }
 
     .badge-seed {
@@ -405,12 +407,13 @@
       top: 0.65rem;
       right: 0.65rem;
       background: rgba(11, 11, 15, 0.88);
-      border: 1px solid var(--violet);
-      color: #c8bbf0;
+      border: 1px solid #525068;
+      color: #c8c5d4;
       font-size: 0.66rem;
       font-family: 'JetBrains Mono', monospace;
-      padding: 0.2rem 0.5rem;
+      padding: 0.22rem 0.55rem;
       border-radius: 6px;
+      letter-spacing: 0.04em;
     }
 
     .badge-num {
@@ -418,11 +421,11 @@
       top: 0.65rem;
       left: 0.65rem;
       background: rgba(11, 11, 15, 0.88);
-      border: 1px solid var(--border-gold);
-      color: var(--gold);
+      border: 1px solid #444258;
+      color: #e4e1ee;
       font-size: 0.72rem;
       font-family: 'JetBrains Mono', monospace;
-      padding: 0.2rem 0.5rem;
+      padding: 0.22rem 0.52rem;
       border-radius: 6px;
     }
 
@@ -435,15 +438,15 @@
 
     .card-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.12rem;
-      color: var(--gold);
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 0.45rem;
+      font-size: 1.05rem;
+      color: var(--text);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
     .card-verses {
-      font-size: 0.88rem;
-      color: var(--text);
+      font-size: 0.86rem;
+      color: var(--text-muted);
       white-space: pre-line;
       max-height: 290px;
       overflow-y: auto;
@@ -452,20 +455,12 @@
 
     .card-verses.seed-quote {
       font-style: italic;
-      color: #d8d2ea;
-      border-left: 2px solid var(--violet);
-      padding-left: 0.75rem;
+      color: #b7b3c7;
       max-height: none;
     }
 
     .card-verses::-webkit-scrollbar { width: 4px; }
     .card-verses::-webkit-scrollbar-thumb { background: var(--border-gold); border-radius: 4px; }
-
-    .card-actions {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 0.25rem;
-    }
 
     /* MAZO */
     .deck-toolbar {
@@ -483,14 +478,23 @@
       color: var(--text);
       padding: 0.55rem 0.9rem;
       border-radius: 8px;
-      font-size: 0.88rem;
-      min-width: 230px;
+      font-size: 0.86rem;
+      min-width: 220px;
+      font-family: inherit;
     }
 
     .deck-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 1.25rem;
+    }
+
+    @media (max-width: 1100px) {
+      .deck-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .deck-grid { grid-template-columns: 1fr; }
     }
 
     .deck-item {
@@ -500,18 +504,21 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, transform 0.2s;
     }
 
-    .deck-item:hover { border-color: var(--border-gold); }
+    .deck-item:hover {
+      border-color: var(--border-gold);
+      transform: translateY(-2px);
+    }
 
     .deck-item-body {
-      padding: 1rem;
+      padding: 1.05rem;
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 0.75rem;
+      gap: 0.9rem;
     }
 
     .deck-excerpt {
@@ -522,11 +529,31 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
       white-space: pre-line;
+      margin-top: 0.45rem;
     }
 
     .deck-excerpt.seed-quote {
       font-style: italic;
-      color: #c8bbf0;
+      color: #b7b3c7;
+    }
+
+    .deck-action-btn {
+      width: 100%;
+      justify-content: center;
+      background: #14141c;
+      border: 1px solid #2b2b3a;
+      color: #e4e1ee;
+      padding: 0.55rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .deck-action-btn:hover {
+      border-color: var(--gold-dim);
+      background: #1c1c27;
     }
 
     /* MODAL */
@@ -615,8 +642,8 @@
       </div>
 
       <nav>
-        <button class="tab-btn active" data-view="tiradas">Tiradas</button>
-        <button class="tab-btn" data-view="mazo">Mazo Completo (<span id="count-total">0</span>)</button>
+        <button class="tab-btn" data-view="tiradas">Tiradas</button>
+        <button class="tab-btn active" data-view="mazo">Mazo Completo (<span id="count-total">0</span>)</button>
         <button class="tab-btn" data-view="json">JSON / Respaldo</button>
       </nav>
     </div>
@@ -626,7 +653,7 @@
     <div class="status-bar">
       <div class="status-info">
         <span class="dot loading" id="repo-dot"></span>
-        <span id="repo-status">Sincronizando imágenes desde github.com/3emanuell-hash/periferico...</span>
+        <span id="repo-status">Escaneando imágenes en github.com/3emanuell-hash/periferico...</span>
       </div>
       <div class="controls-row">
         <label class="toggle-label" title="Incluye o excluye las cartas que tienen oración breve del título en las tiradas">
@@ -638,7 +665,7 @@
     </div>
 
     <!-- VISTA TIRADAS -->
-    <section id="view-tiradas">
+    <section id="view-tiradas" class="hidden">
       <div class="spread-selector">
         <div class="spread-pills">
           <button class="spread-pill active" data-spread="dia">☉ Carta del Día (1)</button>
@@ -655,11 +682,11 @@
     </section>
 
     <!-- VISTA MAZO COMPLETO -->
-    <section id="view-mazo" class="hidden">
+    <section id="view-mazo">
       <div class="deck-toolbar">
         <div class="controls-row">
           <input type="text" class="search-input" id="search-deck" placeholder="Buscar carta, título u oración..." />
-          <select id="filter-deck" class="search-input" style="min-width:190px;">
+          <select id="filter-deck" class="search-input" style="min-width:170px;">
             <option value="all">Todas las cartas</option>
             <option value="written">Con texto desarrollado</option>
             <option value="seed">Con oración del título</option>
@@ -737,7 +764,7 @@
   <script>
     const GITHUB_OWNER = '3emanuell-hash';
     const GITHUB_REPO = 'periferico';
-    const STORAGE_KEY = 'oraculo_periferico_deck_v3';
+    const STORAGE_KEY = 'oraculo_periferico_deck_v5';
 
     const BASE_CARDS = [
       {
@@ -1058,7 +1085,7 @@ el día de los impuestos y de rendir cuentas, marquitos galperin tiene que ser e
       const dot = document.getElementById('repo-dot');
       const status = document.getElementById('repo-status');
       dot.className = 'dot loading';
-      status.textContent = 'Escaneando imágenes en github.com/3emanuell-hash/periferico...';
+      status.textContent = 'Sincronizando imágenes desde github.com/3emanuell-hash/periferico...';
 
       try {
         let branch = 'main';
@@ -1077,8 +1104,8 @@ el día de los impuestos y de rendir cuentas, marquitos galperin tiene que ser e
           throw new Error('No se pudo leer el árbol del repositorio');
         }
 
-        const imageExts = /\.(png|jpg|jpeg|webp|gif)$/i;
-        const ignoreNames = /(favicon|logo|banner|icon|bg|background|reverso|back)/i;
+        const imageExts = /\.(png|jpg|jpeg|webp|gif|svg)$/i;
+        const ignoreNames = /^(favicon|apple-touch-icon|logo-site|banner-site|reverso|back)\./i;
 
         repoImages = treeData.tree
           .filter(item => item.type === 'blob' && imageExts.test(item.path))
@@ -1108,7 +1135,7 @@ el día de los impuestos y de rendir cuentas, marquitos galperin tiene que ser e
 
           let match = repoImages.find(img => !img.isIgnored && img.norm === cardNorm);
           if (!match) {
-            match = repoImages.find(img => !img.isIgnored && keywords.some(kw => kw.length >= 3 && img.norm.includes(kw)));
+            match = repoImages.find(img => !img.isIgnored && keywords.some(kw => kw.length >= 2 && img.norm.includes(kw)));
           }
           if (match) {
             card.image = match.url;
@@ -1122,7 +1149,9 @@ el día de los impuestos y de rendir cuentas, marquitos galperin tiene que ser e
 
           const alreadyExists = deck.some(c => c.image === img.url || normalizeStr(c.title) === img.norm);
           if (!alreadyExists) {
-            const niceTitle = img.cleanName.charAt(0).toUpperCase() + img.cleanName.slice(1);
+            const niceTitle = img.cleanName
+              ? img.cleanName.charAt(0).toUpperCase() + img.cleanName.slice(1)
+              : img.filename;
             deck.push({
               id: 'repo-' + normalizeStr(img.path).replace(/\s+/g, '-'),
               title: niceTitle,
@@ -1137,7 +1166,7 @@ el día de los impuestos y de rendir cuentas, marquitos galperin tiene que ser e
         populateImageSelector();
         saveDeck();
         renderDeckGrid();
-        if (currentDrawn.length === 0) drawSpread();
+        drawSpread();
 
         dot.className = 'dot';
         const writtenCount = deck.filter(c => hasCustomText(c)).length;
@@ -1145,10 +1174,10 @@ el día de los impuestos y de rendir cuentas, marquitos galperin tiene que ser e
         status.textContent = `Repo sincronizado: ${deck.length} cartas (${writtenCount} con texto largo · ${seedCount} con oración del título).`;
       } catch (err) {
         dot.className = 'dot warn';
-        status.textContent = `Modo local activo (${deck.length} cartas). Podés sincronizar o editar cartas manualmente.`;
+        status.textContent = `Modo local activo (${deck.length} cartas). Podés sincronizar nuevamente en cualquier momento.`;
         saveDeck();
         renderDeckGrid();
-        if (currentDrawn.length === 0) drawSpread();
+        drawSpread();
       }
     }
 
@@ -1219,26 +1248,20 @@ el día de los impuestos y de rendir cuentas, marquitos galperin tiene que ser e
                   ${isSeed ? '<span class="badge-seed">ORACIÓN BREVE</span>' : ''}
                   ${
                     card.image
-                      ? `<img src="${card.image}" alt="${card.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      ? `<img src="${card.image}" alt="${card.title}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
                          <div class="card-art-placeholder" style="display:none;">
-                           <span style="font-size:1.8rem;">☉ ☽ ☿</span>
+                           <span style="font-size:1.6rem;">☉ ☽ ☿</span>
                            <strong>${card.title}</strong>
                          </div>`
                       : `<div class="card-art-placeholder">
-                           <span style="font-size:1.8rem;">☉ ☽ ☿</span>
+                           <span style="font-size:1.6rem;">☉ ☽ ☿</span>
                            <strong>${card.title}</strong>
-                           <span style="font-size:0.75rem; color:var(--text-muted);">Imagen pendiente en repo</span>
                          </div>`
                   }
                 </div>
                 <div class="card-body">
                   <div class="card-title">${card.title}</div>
                   <div class="card-verses ${isSeed ? 'seed-quote' : ''}">${escapeHtml(text)}</div>
-                  <div class="card-actions">
-                    <button class="btn" style="font-size:0.76rem; padding:0.35rem 0.65rem;" onclick="event.stopPropagation(); openEditModal('${card.id}')">
-                      ✎ ${isSeed ? 'Ampliar texto' : 'Editar carta'}
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>
@@ -1272,26 +1295,24 @@ el día de los impuestos y de rendir cuentas, marquitos galperin tiene que ser e
         const item = document.createElement('div');
         item.className = 'deck-item';
         item.innerHTML = `
-          <div class="card-art" style="aspect-ratio: 4/4;">
+          <div class="card-art">
             <span class="badge-num">#${String(idx + 1).padStart(2, '0')}</span>
             ${isSeed ? '<span class="badge-seed">ORACIÓN BREVE</span>' : ''}
             ${
               card.image
-                ? `<img src="${card.image}" alt="${card.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                ? `<img src="${card.image}" alt="${card.title}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
                    <div class="card-art-placeholder" style="display:none;"><span>☉ ☽ ☿</span><strong>${card.title}</strong></div>`
                 : `<div class="card-art-placeholder"><span>☉ ☽ ☿</span><strong>${card.title}</strong></div>`
             }
           </div>
           <div class="deck-item-body">
             <div>
-              <div class="card-title" style="font-size:1rem; margin-bottom:0.45rem;">${card.title}</div>
+              <div class="card-title">${card.title}</div>
               <div class="deck-excerpt ${isSeed ? 'seed-quote' : ''}">${escapeHtml(text)}</div>
             </div>
-            <div style="display:flex; justify-content:space-between; gap:0.5rem;">
-              <button class="btn" style="flex:1; justify-content:center;" onclick="openEditModal('${card.id}')">
-                ✎ ${isSeed ? 'Ampliar / Editar' : 'Editar / Leer'}
-              </button>
-            </div>
+            <button class="deck-action-btn" onclick="openEditModal('${card.id}')">
+              ✎ ${isSeed ? 'Ampliar / Editar' : 'Editar / Leer'}
+            </button>
           </div>
         `;
         grid.appendChild(item);
