@@ -1,1179 +1,1414 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORÁCULO PERIFÉRICO — Mazo de/codificacion comunitaria</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Cinzel', 'serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        void: '#130921',
-                        panel: '#1d1033',
-                        panelLight: '#281745',
-                        gold: '#eab308',
-                        goldDark: '#ca8a04',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            background-color: #130921;
-            color: #f3f4f6;
-            background-image: 
-                radial-gradient(circle at 15% 15%, rgba(126, 34, 206, 0.22) 0%, transparent 45%),
-                radial-gradient(circle at 85% 85%, rgba(234, 179, 8, 0.08) 0%, transparent 45%);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oráculo Periférico — Mazo de/codificación comunitaria</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0b0e;
+      --bg-elev: #131318;
+      --bg-card: #181820;
+      --border: #2a2a36;
+      --border-gold: #8c6d3f;
+      --gold: #d4af6a;
+      --gold-dim: #9c7d44;
+      --mercury: #8fa8c8;
+      --moon: #b8b3d6;
+      --text: #eceae4;
+      --text-muted: #9895a0;
+      --danger: #d9534f;
+      --radius: 12px;
+    }
 
-        .perspective-container {
-            perspective: 1200px;
-        }
-        .card-flipper {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
-            transform-style: preserve-3d;
-        }
-        .card-flipper.is-flipped {
-            transform: rotateY(180deg);
-        }
-        .card-face {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 1rem;
-            overflow: hidden;
-        }
-        .card-front {
-            transform: rotateY(180deg);
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .card-back-design {
-            background-color: #1a0d2e;
-            background-image: 
-                radial-gradient(circle at center, rgba(234, 179, 8, 0.22) 0%, transparent 70%),
-                repeating-linear-gradient(45deg, rgba(234, 179, 8, 0.05) 0px, rgba(234, 179, 8, 0.05) 1px, transparent 1px, transparent 14px),
-                repeating-linear-gradient(-45deg, rgba(168, 85, 247, 0.06) 0px, rgba(168, 85, 247, 0.06) 1px, transparent 1px, transparent 14px);
-        }
+    body {
+      background: radial-gradient(circle at 50% 0%, #171622 0%, var(--bg) 65%);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.55;
+    }
 
-        @keyframes dealCard {
-            0% { opacity: 0; transform: translateY(25px) scale(0.92); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .animate-deal {
-            animation: dealCard 0.45s ease-out forwards;
-        }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+      background: rgba(11, 11, 14, 0.85);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
 
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #130921; }
-        ::-webkit-scrollbar-thumb { background: #3b2063; border-radius: 999px; }
-        ::-webkit-scrollbar-thumb:hover { background: #eab308; }
-    </style>
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .astro-sigil {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 1.15rem;
+      color: var(--gold);
+      border: 1px solid var(--border-gold);
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(212, 175, 106, 0.06);
+    }
+
+    .brand h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.35rem;
+      letter-spacing: 0.06em;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .brand p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--gold-dim);
+      color: var(--text);
+    }
+
+    .tab-btn.active {
+      background: rgba(212, 175, 106, 0.12);
+      border-color: var(--gold);
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    main {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.75rem 1.5rem 3rem;
+      flex: 1;
+    }
+
+    .status-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      padding: 0.65rem 1rem;
+      border-radius: var(--radius);
+      margin-bottom: 1.75rem;
+      font-size: 0.82rem;
+    }
+
+    .status-info {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--text-muted);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4caf50;
+      display: inline-block;
+    }
+
+    .dot.loading { background: var(--gold); animation: pulse 1s infinite; }
+    .dot.warn { background: #e6a23c; }
+
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .toggle-label {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      cursor: pointer;
+      color: var(--text);
+      user-select: none;
+    }
+
+    .btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn:hover { border-color: var(--gold-dim); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #b89047, #8f6b29);
+      border-color: var(--gold);
+      color: #0b0b0e;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.1);
+    }
+
+    /* TIRADAS */
+    .spread-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .spread-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .spread-pill {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .spread-pill.active {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(212, 175, 106, 0.1);
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .slot {
+      background: rgba(19, 19, 24, 0.65);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .slot-header {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .slot-symbol {
+      font-size: 1.1rem;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .slot-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .slot-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* CARTA 3D */
+    .card-scene {
+      width: 100%;
+      max-width: 310px;
+      perspective: 1200px;
+      cursor: pointer;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+      transform-style: preserve-3d;
+    }
+
+    .card-scene.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--border-gold);
+      backface-visibility: hidden;
+      overflow: hidden;
+      background: var(--bg-card);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.55);
+    }
+
+    .card-back {
+      aspect-ratio: 2 / 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background:
+        radial-gradient(circle at center, rgba(212,175,106,0.12) 0%, transparent 70%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 2px, transparent 2px, transparent 8px),
+        #121218;
+      text-align: center;
+    }
+
+    .card-back-frame {
+      border: 1px solid var(--border-gold);
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85rem;
+      padding: 1rem;
+    }
+
+    .card-back-symbols {
+      font-size: 1.6rem;
+      color: var(--gold);
+      letter-spacing: 0.4rem;
+    }
+
+    .card-back-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.14em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+    }
+
+    .card-front {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .card-scene.flipped .card-front {
+      position: relative;
+    }
+
+    .card-scene.flipped .card-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+    }
+
+    .card-art {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      background: #0e0e13;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-art-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      text-align: center;
+      background: radial-gradient(circle, #1d1c29 0%, #0e0e13 100%);
+      color: var(--gold-dim);
+      gap: 0.6rem;
+    }
+
+    .badge-unwritten {
+      position: absolute;
+      top: 0.65rem;
+      right: 0.65rem;
+      background: rgba(11, 11, 14, 0.85);
+      border: 1px solid var(--mercury);
+      color: var(--mercury);
+      font-size: 0.68rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+    }
+
+    .badge-num {
+      position: absolute;
+      top: 0.65rem;
+      left: 0.65rem;
+      background: rgba(11, 11, 14, 0.85);
+      border: 1px solid var(--border-gold);
+      color: var(--gold);
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+    }
+
+    .card-body {
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .card-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      color: var(--gold);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.45rem;
+    }
+
+    .card-verses {
+      font-size: 0.88rem;
+      color: var(--text);
+      white-space: pre-line;
+      max-height: 290px;
+      overflow-y: auto;
+      padding-right: 0.35rem;
+    }
+
+    .card-verses::-webkit-scrollbar { width: 4px; }
+    .card-verses::-webkit-scrollbar-thumb { background: var(--border-gold); border-radius: 4px; }
+
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.35rem;
+    }
+
+    /* MAZO / GRIMORIO */
+    .deck-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .search-input {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.55rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      min-width: 240px;
+    }
+
+    .deck-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .deck-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s;
+    }
+
+    .deck-item:hover { border-color: var(--border-gold); }
+
+    .deck-item-body {
+      padding: 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .deck-excerpt {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      white-space: pre-line;
+    }
+
+    /* MODAL EDITOR */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      background: var(--bg-elev);
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .modal h2 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      font-size: 1.2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .form-group label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .form-group input, .form-group textarea, .form-group select {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.6rem 0.8rem;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+
+    .form-group textarea {
+      min-height: 200px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .hidden { display: none !important; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.25rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+  </style>
 </head>
-<body class="antialiased flex flex-col selection:bg-gold/30 selection:text-yellow-200">
+<body>
 
-    <div id="toast-box" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
-
-    <div id="confirm-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-        <div class="bg-panel border border-gold/40 rounded-2xl max-w-md w-full p-6 shadow-2xl">
-            <h3 id="confirm-title" class="font-serif text-lg font-bold text-gold mb-2">Confirmar acción</h3>
-            <p id="confirm-msg" class="text-sm text-purple-100/90 mb-6">¿Estás seguro?</p>
-            <div class="flex justify-end gap-3">
-                <button id="confirm-cancel" class="px-4 py-2 rounded-xl bg-panelLight hover:bg-purple-900 text-sm font-medium transition cursor-pointer">Cancelar</button>
-                <button id="confirm-ok" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-sm font-medium transition cursor-pointer">Confirmar</button>
-            </div>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="astro-sigil" title="Sol · Luna · Mercurio">☉ ☽ ☿</div>
+        <div>
+          <h1>ORÁCULO PERIFÉRICO</h1>
+          <p>Mazo de/codificación comunitaria</p>
         </div>
+      </div>
+
+      <nav>
+        <button class="tab-btn active" data-view="tiradas">Tiradas</button>
+        <button class="tab-btn" data-view="mazo">Mazo Completo (<span id="count-total">0</span>)</button>
+        <button class="tab-btn" data-view="json">JSON / Respaldo</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="status-bar">
+      <div class="status-info">
+        <span class="dot loading" id="repo-dot"></span>
+        <span id="repo-status">Sincronizando imágenes desde github.com/3emanuell-hash/periferico...</span>
+      </div>
+      <div class="controls-row">
+        <label class="toggle-label" title="Permite que salgan en las tiradas las cartas que aún no tienen versos escritos">
+          <input type="checkbox" id="include-unwritten" checked />
+          <span>Incluir cartas sin texto en tiradas</span>
+        </label>
+        <button class="btn" id="btn-resync" title="Volver a leer imágenes del repositorio">↻ Sincronizar Repo</button>
+      </div>
     </div>
 
-    <div id="detail-modal" class="fixed inset-0 z-40 hidden items-center justify-center bg-black/85 backdrop-blur-md p-4 overflow-y-auto" onclick="if(event.target === this) closeDetailModal()">
-        <div class="bg-panel border-2 border-gold/50 rounded-2xl max-w-xl w-full overflow-hidden shadow-[0_0_60px_rgba(234,179,8,0.25)] my-auto" id="detail-modal-body">
+    <!-- VISTA TIRADAS -->
+    <section id="view-tiradas">
+      <div class="spread-selector">
+        <div class="spread-pills">
+          <button class="spread-pill active" data-spread="dia">☉ Carta del Día (1)</button>
+          <button class="spread-pill" data-spread="ppf">☽ Pasado / Presente / Futuro (3)</button>
+          <button class="spread-pill" data-spread="tactica">☿ Táctica Comunitaria (4)</button>
         </div>
+        <div class="controls-row">
+          <button class="btn" id="btn-reveal-all">Voltear todas</button>
+          <button class="btn btn-primary" id="btn-draw">Barajar y Tirar</button>
+        </div>
+      </div>
+
+      <div class="board" id="spread-board"></div>
+    </section>
+
+    <!-- VISTA MAZO COMPLETO -->
+    <section id="view-mazo" class="hidden">
+      <div class="deck-toolbar">
+        <div class="controls-row">
+          <input type="text" class="search-input" id="search-deck" placeholder="Buscar carta o verso..." />
+          <select id="filter-deck" class="search-input" style="min-width:170px;">
+            <option value="all">Todas las cartas</option>
+            <option value="written">Con texto escrito</option>
+            <option value="unwritten">Sin texto aún</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" id="btn-new-card">+ Nueva Carta</button>
+      </div>
+
+      <div class="deck-grid" id="deck-grid"></div>
+    </section>
+
+    <!-- VISTA JSON -->
+    <section id="view-json" class="hidden">
+      <div class="slot" style="align-items: stretch; gap: 1rem;">
+        <div>
+          <h2 style="font-family:'Cinzel',serif; color:var(--gold); margin-bottom:0.35rem;">Persistencia y Respaldo JSON</h2>
+          <p style="font-size:0.85rem; color:var(--text-muted);">
+            Tus ediciones se guardan automáticamente en el navegador. Podés descargar el archivo <code>mazo.json</code> para subirlo a tu repositorio <strong>3emanuell-hash/periferico</strong> o restaurar una copia previa.
+          </p>
+        </div>
+        <div class="controls-row">
+          <button class="btn btn-primary" id="btn-export-json">⬇ Descargar mazo.json</button>
+          <label class="btn" style="cursor:pointer;">
+            ⬆ Importar JSON
+            <input type="file" id="input-import-json" accept=".json" class="hidden" />
+          </label>
+          <button class="btn" id="btn-reset-default" style="color:var(--danger);">Restaurar mazo base</button>
+        </div>
+        <textarea id="json-preview" readonly style="width:100%; min-height:320px; background:var(--bg); color:var(--mercury); border:1px solid var(--border); border-radius:8px; padding:0.85rem; font-family:'JetBrains Mono',monospace; font-size:0.78rem;"></textarea>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL EDITAR / LEER CARTA -->
+  <div class="modal-backdrop" id="card-modal">
+    <div class="modal">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 id="modal-heading">Editar Carta</h2>
+        <button class="btn" id="btn-close-modal">✕</button>
+      </div>
+
+      <input type="hidden" id="edit-id" />
+
+      <div class="form-group">
+        <label>Nombre de la Carta</label>
+        <input type="text" id="edit-title" placeholder="Ej: Eva 01 berserker" />
+      </div>
+
+      <div class="form-group">
+        <label>Imagen asignada (URL directa o seleccionada del repo)</label>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <input type="text" id="edit-image" style="flex:1;" placeholder="https://raw.githubusercontent.com/3emanuell-hash/periferico/..." />
+          <select id="edit-repo-image-select" style="max-width:230px;">
+            <option value="">-- Elegir imagen del repo --</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Texto / Versos de la carta (dejar vacío si aún no está escrita)</label>
+        <textarea id="edit-text" placeholder="Escribí acá los versos o sentidos de la carta..."></textarea>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:0.6rem;">
+        <button class="btn" id="btn-cancel-modal">Cancelar</button>
+        <button class="btn btn-primary" id="btn-save-card">Guardar Carta</button>
+      </div>
     </div>
+  </div>
 
-    <header class="sticky top-0 z-30 bg-void/90 backdrop-blur-md border-b border-gold/25">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-3.5">
-                <div class="w-12 h-12 rounded-2xl bg-panel border border-gold/50 flex items-center justify-center text-gold shadow-[0_0_20px_rgba(234,179,8,0.18)] shrink-0">
-                    <svg class="w-8 h-8" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="14" cy="15" r="4" fill="currentColor" fill-opacity="0.15"/>
-                        <line x1="14" y1="8" x2="14" y2="10" />
-                        <line x1="14" y1="20" x2="14" y2="22" />
-                        <line x1="7" y1="15" x2="9" y2="15" />
-                        <line x1="19" y1="15" x2="21" y2="15" />
-                        <path d="M11 9.5a5.5 5.5 0 0 0 0 11 4.5 4.5 0 0 1 0-11z" fill="currentColor" fill-opacity="0.25"/>
-                        <circle cx="23" cy="13" r="2.5" fill="currentColor" fill-opacity="0.2"/>
-                        <path d="M20.5 15.5 L23 18.5 L25.5 15.5" />
-                        <line x1="23" y1="18.5" x2="23" y2="22" />
-                        <path d="M21 20.5 Q23 21.5 25 20.5" />
-                    </svg>
-                </div>
-                <div>
-                    <h1 class="font-serif text-xl sm:text-2xl md:text-3xl font-extrabold tracking-wider text-gold drop-shadow-[0_2px_10px_rgba(234,179,8,0.25)]">
-                        ORÁCULO PERIFÉRICO
-                    </h1>
-                    <p class="text-xs sm:text-sm font-mono text-purple-200/80">
-                        mazo de/codificacion comunitaria
-                    </p>
-                </div>
-            </div>
+  <footer>
+    Oráculo Periférico · Mazo de/codificación comunitaria · Repositorio vinculado: <code>3emanuell-hash/periferico</code>
+  </footer>
 
-            <nav class="flex bg-panel p-1.5 rounded-xl border border-gold/25 w-full md:w-auto justify-center gap-1">
-                <button onclick="switchTab('tirada')" id="nav-tirada" class="nav-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-semibold transition-all bg-gold text-void shadow-md cursor-pointer">
-                    ✦ Tirada
-                </button>
-                <button onclick="switchTab('galeria')" id="nav-galeria" class="nav-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all text-purple-200 hover:text-white hover:bg-panelLight cursor-pointer">
-                    ◈ Galería (<span id="total-cards-badge">0</span>)
-                </button>
-                <button onclick="switchTab('editor')" id="nav-editor" class="nav-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all text-purple-200 hover:text-white hover:bg-panelLight cursor-pointer">
-                    ⚙ Cargar / Editar
-                </button>
-            </nav>
-        </div>
-    </header>
+  <script>
+    const GITHUB_OWNER = '3emanuell-hash';
+    const GITHUB_REPO = 'periferico';
+    const STORAGE_KEY = 'oraculo_periferico_deck_v2';
 
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8">
+    const BASE_CARDS = [
+      {
+        id: 'eva-01-berserker',
+        title: 'Eva 01 berserker',
+        keywords: ['eva', '01', 'berserker', 'evangelion'],
+        image: '',
+        text: `Escuchar el llamado, el latido de auxilio
+Retroceder para recuperar
+Atrapar la garra mientras se cree ganador, 
+Frenar el brazo que golpea, cortarlo cuando se extendió
+sostener la tensión, como cuando se agarra el mango de un martillo
+El objetivo es eliminar lo que amenaza a los hijos
+Correr hacia los ojos y atacar en el centro
+Lo que queda hacer es morder y devorar,
+Aquello que nos cazaba ahora se convirtió en nuestra presa
 
-        <section id="tab-tirada" class="space-y-8">
-            <div class="bg-panel border border-gold/30 rounded-2xl p-5 sm:p-6 shadow-2xl space-y-5">
-                <div class="space-y-2">
-                    <label for="question-input" class="block font-serif text-base sm:text-lg font-bold text-gold">
-                        Qué quieres preguntar al oráculo
-                    </label>
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <input type="text" id="question-input" placeholder="Escribí tu consulta, situación o intención antes de repartir..." class="flex-1 bg-void/90 border border-gold/30 focus:border-gold rounded-xl px-4 py-3 text-sm sm:text-base text-white placeholder-purple-300/40 focus:outline-none transition">
-                        <button type="button" onclick="pinQuestion()" class="px-5 py-3 rounded-xl bg-panelLight hover:bg-purple-800/70 border border-gold/40 text-gold text-sm font-semibold transition shrink-0 cursor-pointer">
-                            Fijar pregunta
-                        </button>
-                    </div>
-                </div>
+Aumentar la respiración 
+Sincronizacion con el animal
+sacrificar el dolor para enfrentar lo que quita la vida
+Instinto de madre, cuidar a toda costa al hijo
+Defender la humanidad con animalidad brutal
+Alimentarse del otro por supervivencia
+De presa a depredador implacable
+Estado primario de defensa
+Defender el territorio y espacio personal
+Regeneración y recuperación`
+      },
+      {
+        id: 'edu-y-el-simbiote',
+        title: 'Edu y el simbiote',
+        keywords: ['edu', 'simbiote', 'venom', 'symbionte'],
+        image: '',
+        text: `A donde iremos, nose sabe pero quizás a donde necesiten protectores letales
+Aceptarse a uno, incluso a las contradicciones 
+Expresar el limite y normas de cada uno y de cada mundo
+Cuando amas a alguien, aceptas a la persona completa incluso con sus defectos
+Parasitarse para encontrar el lugar sano de cada uno
+Como villanos que se convierten en antiheroes
+Nadie es perfecto
+Cada husped es único, y por eso cada experiencia es enseñanza 
+Alimentar el parasito para poder convivir
+Perdida de control y reactividad
+Los cerebros son deliciosos`
+      },
+      {
+        id: 'cotorra-argentina',
+        title: 'Cotorra argentina',
+        keywords: ['cotorra', 'loro', 'argentina'],
+        image: '',
+        text: `Comunidad, comunicación 
+Advertir, vigilar 
+Calor, territorio y jerarquía 
+Hacerse escuchar en el griterio 
+Ruido encimado invasor
+Sostener la amistad, red de cuidados
+Confianza de expresión en el grupo
+Multitud y cercanía como defensa
+Chillido de presencia y cantidad
+El valor de estar a tu lado
+Espontanea gracia`
+      },
+      {
+        id: 'el-ogro',
+        title: 'El ogro',
+        keywords: ['ogro', 'shrek', 'pantano'],
+        image: '',
+        text: `Por que la amabilidad?
+Una cara dice mas que mil palabras, el ogro no cree en las adulaciones
+Ogro en mano, ogro enano
+Solo quiere terminar su trabajo y estar tranquilo en su casa
+Ya curtido del maltrato ajeno no confía fácilmente en los gestos, 
+Por eso acostumbra a estar solo. 
+Ogro que ríe, no muerde
+Inocente pero ya no se come cualquier chamullo
+Fuerte pero sensible en su orgullo
+Los ogros son como cebollas
+Mejor afuera que adentro, siempre lo he dicho
+Me juzgan sin siquiera conocerme
+Algún día querrán visitar mi pantano
+No soy un héroe, soy un desastre de alto funcionamiento
+A veces es hacer una cara y seguir camino`
+      },
+      {
+        id: 'el-tio-iroh',
+        title: 'El tio Iroh',
+        keywords: ['iroh', 'tio', 'dragon', 'te'],
+        image: '',
+        text: `El dragón del oeste
+Dicen que El mas rico es el que menos necesita y 
+Si el camino para el prestigio y status que buscamos implica perder lo que mas amamos, 
+Estamos dispuestos a pagar el precio?
+La paciencia es un vehículo esencial para derrotar el dolor y la tristeza 
+Aquel que conoció la guerra en carne propia, sabe el valor de paz y la coexistencia
+El orgullo de una nación no es solo valorar lo propio sino también aceptar lo desconocido y como puede integrar al otro para ser mas completo
+Aquel que siendo el mas poderoso de una nación prefiere ser un vendedor de blends de te
+Es el que alcanza apreciar cada momento como único
+La humildad abre puertas inimaginables, incluso las del perdón y lo divino
+La humildad no es solo autoconocimiento sino reconocer los limites y virtudes de uno
+El orgullo es fuente para la vergüenza e ira
+la perfección y el poder se sobreestiman, es sabio elegir la felicidad y el amor
+La ultima técnica es poder dirigir el rayo y ser un conductor transitorio, no se alimenta de ira, requiere paz mental, la energía esta en todas partes, como separas y canalizas ese relámpago, primero respira y crea un camino, siente el flujo 
+Tomar la nación de la tierra para liberarla de la nación del fuego
+Buscar terminar la guerra
+El destino es nuestro amigo
+Ayudar al idealista de corazón y honor incuestionable, al que lucho y sufrió y restauro su honor y puede restaurar el honor de la nación
+Te delicioso o veneno mortal?
+Buscar ayuda del reino tierra
+Jugar juegos de mesa
+Comparti un te con un desconocido`
+      },
+      {
+        id: '2001',
+        title: '2001',
+        keywords: ['2001', 'argentinazo', 'cacerolazo', 'fmi'],
+        image: '',
+        text: `Recetas del fmi, que traen la miseria conocida
+Recesión e inflación, densidad en la calle y 
+Ollas populares que sostienen
+En Ritmos de tambores nacen Cooperativas
+Estado resignado, infunden miedo como herramienta disciplinatoria 
+Provocar y hambrear a un pueblo harto y que no tiene nada para perder mas que sus ataduras
+De gobiernos chantas 
+Odio y descontento que alimentan nuestros espíritus de lucha
+Asambleas y reuniones barriales
+Movimiento de desocupados, trabajadores y ahorristas
+descontento en medida de fuerza: cortar las rutas, puentes y accesos de la ciudad
+Tomando la ciudad por asalto
+El Enfrentamiento físico y la Cazeria a lugares de resistencia 
+Masacres planificadas, la sangre de luchadores no nos deja respirar
+renuncia del gobierno y conciliación`
+      },
+      {
+        id: 'helicoptero',
+        title: 'Helicóptero',
+        keywords: ['helicoptero', 'heli', 'escape', 'rosada'],
+        image: '',
+        text: `Hélices del titere
+Y Señal de escape del gobernante
+Ruta de salida recomendada para el que se encuentra
+Acorralado.
+Emergencia, para toda la nacion
+Que se vayan todos y no quede ni uno solo
+Vehículo rápido con Desenlace de renuncia
+Casa rosada, rosa como la sangre de luchadorxs derramada 
+No hay vicepresidente
+¿Qué hacés cuando el poder se va por el aire y nadie atiende el teléfono?
+Solo queda tomar el poder`
+      },
+      {
+        id: 'descanso',
+        title: 'Descanso',
+        keywords: ['descanso', 'dormir', 'reposo', 'sueno'],
+        image: '',
+        text: `Descansa de la productividad, desconéctate, glorifica tu reposo en la pereza y quietud
+el ocio como derecho, tu salario también es el tiempo libre y energía que te quedo después de la jornada.
+Defiende tu tiempo libre para recuperar tu vida, cuida la pequeña muerte cotidiana, donde puedes recuperar energía cada día y darle un sentido a cada despertar.
+Cela tu sueño de noche, donde la mente y el corazón desahogan la tensión.
+En el descanso se curan y calman algunas heridas.
+Descansa para cuidar la llama
+que el dormir sin reloj no sea una utopía.
+que tus sueños se hagan realidad mientras duermes`
+      },
+      {
+        id: 'culpa',
+        title: 'Culpa',
+        keywords: ['culpa', 'cruz', 'remordimiento'],
+        image: '',
+        text: `¿Que mandatos sociales y familiares llevamos? ¿Que remordimiento sostenemos? ¿de que manera queremos absolvernos?, como redimimos nuestros errores? Que cruz arrastramos? Por que nos martirizamos? 
+O mejor nos preguntamos, de que y para quien sirve la culpa:
+Si fallamos es producto de nuestra ignorancia
+Si erramos es parte del aprendizaje para tener sabiduría 
+La acción de cambio y responsabilidad para dejar el autocastigo
+Una atención plena, aceptando lo que no se puede cambiar y actuando desde la virtud
+Ser integro y autentico en asumir lo que elegimos 
+hacernos cargo de las consecuencias sin remordimientos
+La justicia que nos hace libres y no daña la humanidad 
+el deseo de cambio de la realidad desde la compasión profunda
+La lealtad con uno mismo`
+      },
+      {
+        id: 'plaza',
+        title: 'Plaza',
+        keywords: ['plaza', 'hamaca', 'calesita', 'parque'],
+        image: '',
+        text: `Salgamos del encierro
+Vamos a la plaza, a tomar un poco de aire
+Juguemos en la hamaca
+O mejor en el sube y baja
+También esta la calesita, haber si tenemos suerte y podemos dar unas vueltas mas
+Disfruta del verde pasto y la sombra de los arboles
+Que en un rato hay que volver a casa
+O sino sentemos nos y quedémos nos acá mientras vemos quien viene y va y pasa
+El sol va salir en algún momento y la gente va venir`
+      },
+      {
+        id: 'rio',
+        title: 'Rio',
+        keywords: ['rio', 'agua', 'orilla', 'puentes'],
+        image: '',
+        text: `Agua dulce
+Refrescante y viva
+Que arrastra y empuja
+Fluye sin importar la forma, no tiene resistencia por que no se apega al lugar
+Es suave y arrolladora al mismo tiempo
+Que dirección y por donde pasan esos ríos
+Quien y para que controlarlos
+Si no se cuida y respeta, puede ser una fuerza arrolladora incontrolable
+Escuchar el suelo y huele el ambiente para ver con que ritmo viene
+No critiques, que el agua escucha
+Puede haber rivalidad sino se comparte su cause
+Líquido que lava
+Bebe y se cómo el agua
+Acércate a la orilla y espera
+No es fácil cruzarlos así que apégate al plan
+Haz puentes para cruzarlos`
+      },
+      {
+        id: 'mercadomecago',
+        title: 'Mercadomecago',
+        keywords: ['mercadomecago', 'mercado', 'galperin', 'marquitos', 'moroso'],
+        image: '',
+        text: `El moroso 
+El hombre mas rico de la argentina, que se burla de una jubilada
+El marquitos galperin que no quiere pagar el impuesto a ricos 
+También es el mantenido por el estado, recibe subsidios del gobierno de turno y descuento de impuestos a las ganancias, aportes patronales e impuestos a bienes personales
+Pero después no alcanza para pagarle a los jubilados 
+Se va al Uruguay para ahorrar mas 
+a vos te cobra más del doble que los bancos todos los intereses, tazas usurarias
+si hoy debes 100 mil en pocos meses debes el millón
+te cobran por portación de cara
+tenes un crédito pero no confíes que va durar mucho
+mantenemos a los ricos 
+el día de los impuestos y de rendir cuentas, marquitos galperin tiene que ser el primero en la lista`
+      }
+    ];
 
-                <div class="pt-4 border-t border-gold/15 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
-                    <p class="text-xs sm:text-sm text-purple-200/80">
-                        Se despliega el mazo completo boca abajo. <span class="text-gold font-semibold">Elegí manualmente</span> tus cartas en la mesa.
-                    </p>
+    const SPREADS = {
+      dia: [
+        { symbol: '☉', title: 'Carta del Día', sub: 'Pulso inmediato y foco energético' }
+      ],
+      ppf: [
+        { symbol: '☽', title: 'Pasado', sub: 'Raíz, memoria o lo que viene empujando' },
+        { symbol: '☉', title: 'Presente', sub: 'Estado actual y fuerza en juego' },
+        { symbol: '☿', title: 'Futuro', sub: 'Tendencia, apertura o movimiento próximo' }
+      ],
+      tactica: [
+        { symbol: '☉', title: 'Situación / Territorio', sub: 'Dónde estás parado hoy' },
+        { symbol: '☽', title: 'Obstáculo / Sombra', sub: 'Lo que traba o exige cuidado' },
+        { symbol: '☿', title: 'Recurso / Herramienta', sub: 'Qué activar a favor' },
+        { symbol: '☉', title: 'Acción Táctica', sub: 'Paso concreto a ejecutar' }
+      ]
+    };
 
-                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
-                        <select id="spread-selector" class="bg-void border border-gold/40 text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-gold transition cursor-pointer">
-                            <option value="1">1 Carta — Mensaje del día</option>
-                            <option value="energia">Energía y asesoramiento (2 Cartas)</option>
-                            <option value="3" selected>3 Cartas — Pasado / Presente / Horizonte</option>
-                            <option value="tactica">Táctica — Débil / Fuerte / Defender / Jerarquizar (4 Cartas)</option>
-                            <option value="dimensiones">4 Dimensiones — Pensamiento / Sentimientos / Intención / Acción</option>
-                            <option value="caminos">Caminos a seguir — Situación / Desafío / Consejo / Posible resultado</option>
-                            <option value="llave">Tirada con Llave — 3 Cartas + 1 Llave de Poder</option>
-                        </select>
+    let deck = [];
+    let repoImages = [];
+    let currentSpread = 'dia';
+    let currentDrawn = [];
 
-                        <button type="button" onclick="initSpreadDealing()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-gold to-yellow-500 hover:from-yellow-400 hover:to-amber-300 text-void font-extrabold text-sm shadow-lg shadow-gold/20 active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer">
-                            <span>✦</span> Desplegar Mazo en Mesa
-                        </button>
-                    </div>
-                </div>
-            </div>
+    function normalizeStr(s) {
+      return (s || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim();
+    }
 
-            <div id="pinned-question-box" class="hidden bg-panelLight/80 border border-gold/40 rounded-2xl px-6 py-4 text-center max-w-3xl mx-auto shadow-lg relative">
-                <button onclick="clearPinnedQuestion()" class="absolute top-2.5 right-3 text-xs text-purple-300 hover:text-white" title="Quitar pregunta">✕</button>
-                <span class="block text-[11px] font-mono uppercase tracking-widest text-gold/80 mb-1">Consulta activa en la mesa</span>
-                <p id="pinned-question-text" class="font-serif text-base sm:text-xl text-white italic"></p>
-            </div>
+    function saveDeck() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(deck));
+      updateCounters();
+      document.getElementById('json-preview').value = JSON.stringify(deck, null, 2);
+    }
 
-            <div id="table-area" class="min-h-[420px] flex flex-col items-center justify-center space-y-6">
-                <div id="table-empty" class="text-center py-14 px-4 max-w-md mx-auto space-y-4">
-                    <div class="w-24 h-36 mx-auto rounded-2xl border-2 border-dashed border-gold/40 bg-panel/60 flex flex-col items-center justify-center text-gold gap-2">
-                        <span class="text-3xl">🎴</span>
-                        <span class="text-[10px] font-mono uppercase tracking-widest text-purple-200/70">Mazo Completo</span>
-                    </div>
-                    <h2 class="font-serif text-xl text-white">La mesa está preparada</h2>
-                    <p class="text-sm text-purple-200/75">Elegí tu tirada y apretá <span class="text-gold font-semibold">"Desplegar Mazo en Mesa"</span>.</p>
-                </div>
+    function loadInitialDeck() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            deck = parsed;
+            return;
+          }
+        } catch (e) {}
+      }
+      deck = JSON.parse(JSON.stringify(BASE_CARDS));
+    }
 
-                <div id="selection-banner" class="hidden w-full bg-panel/90 border border-gold/50 rounded-2xl p-4 text-center shadow-lg">
-                    <span id="selection-instruction" class="font-serif text-gold text-base sm:text-lg font-bold">Seleccioná cartas de la baraja</span>
-                    <p id="selection-counter" class="text-xs font-mono text-purple-200 mt-1">Faltan seleccionar 3 cartas</p>
-                </div>
+    async function syncWithGithub() {
+      const dot = document.getElementById('repo-dot');
+      const status = document.getElementById('repo-status');
+      dot.className = 'dot loading';
+      status.textContent = 'Escaneando imágenes en github.com/3emanuell-hash/periferico...';
 
-                <div id="deck-pool-grid" class="hidden w-full grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3 p-4 bg-void/50 border border-gold/20 rounded-2xl max-h-[380px] overflow-y-auto">
-                </div>
+      try {
+        // Intentar detectar rama principal (main o master)
+        let branch = 'main';
+        let treeData = null;
 
-                <div id="selected-slots-container" class="hidden w-full space-y-4 pt-4 border-t border-gold/20">
-                    <h3 class="font-serif text-lg font-bold text-gold text-center">Cartas Seleccionadas en la Tirada</h3>
-                    <div id="dealt-grid" class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch justify-items-center">
-                    </div>
-                </div>
-            </div>
-
-            <div id="table-controls" class="hidden flex justify-center gap-4 pt-2">
-                <button type="button" onclick="resetSpread()" class="px-5 py-2.5 rounded-xl bg-panel hover:bg-panelLight text-gold text-xs font-mono border border-gold/35 transition cursor-pointer">
-                    ↺ Volver a mezclar y repartir
-                </button>
-            </div>
-        </section>
-
-        <section id="tab-galeria" class="hidden space-y-6">
-            <div class="bg-panel border border-gold/30 rounded-2xl p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                <div>
-                    <h2 class="font-serif text-xl font-bold text-gold">Archivo Completo del Mazo</h2>
-                    <p class="text-xs sm:text-sm text-purple-200/80">Explorá todas las cartas organizadas por sus 10 casas.</p>
-                </div>
-
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="text" id="gallery-search-input" oninput="renderGallery()" placeholder="Buscar por nombre o texto..." class="bg-void border border-gold/30 focus:border-gold text-white text-sm rounded-xl px-4 py-2.5 focus:outline-none">
-                    <select id="gallery-cat-select" onchange="renderGallery()" class="bg-void border border-gold/30 focus:border-gold text-white text-sm rounded-xl px-4 py-2.5 focus:outline-none cursor-pointer">
-                        <option value="all">Todas las categorías (10)</option>
-                    </select>
-                </div>
-            </div>
-
-            <div id="gallery-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            </div>
-        </section>
-
-        <section id="tab-editor" class="hidden space-y-6">
-            <div class="bg-panel border border-gold/30 rounded-2xl p-5 space-y-4">
-                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-gold/15 pb-4">
-                    <div>
-                        <h2 class="font-serif text-xl font-bold text-gold">Gestor y Editor de Cartas</h2>
-                        <p class="text-xs sm:text-sm text-purple-200/80">Seleccioná una carta existente para escribir su texto, subirle imagen o crear una nueva.</p>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <button type="button" onclick="startNewCard()" class="px-4 py-2.5 rounded-xl bg-gold hover:bg-yellow-400 text-void font-bold text-xs sm:text-sm transition cursor-pointer">
-                            + Crear nueva carta
-                        </button>
-                        <button type="button" onclick="exportDeckJSON()" class="px-3.5 py-2.5 rounded-xl bg-panelLight hover:bg-purple-800 text-purple-100 text-xs font-mono border border-gold/30 transition cursor-pointer">
-                            ↓ Exportar Mazo (.json)
-                        </button>
-                        <label class="px-3.5 py-2.5 rounded-xl bg-panelLight hover:bg-purple-800 text-purple-100 text-xs font-mono border border-gold/30 transition cursor-pointer">
-                            ↑ Importar Mazo (.json)
-                            <input type="file" accept=".json" onchange="importDeckJSON(event)" class="hidden">
-                        </label>
-                        <button type="button" onclick="askResetFactory()" class="px-3.5 py-2.5 rounded-xl bg-rose-950/70 hover:bg-rose-900 text-rose-200 text-xs font-mono border border-rose-700/50 transition cursor-pointer">
-                            ↺ Restaurar Mazo de Fábrica
-                        </button>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
-                    <div class="md:col-span-4">
-                        <label class="block text-xs font-mono text-purple-200/80 mb-1.5">Filtrar selector por nombre:</label>
-                        <input type="text" id="editor-filter-input" oninput="populateEditorDropdown()" placeholder="Ej: Argentinazo, Dormir..." class="w-full bg-void border border-gold/30 focus:border-gold text-white text-sm rounded-xl px-3.5 py-2.5 focus:outline-none">
-                    </div>
-                    <div class="md:col-span-8">
-                        <label class="block text-xs font-mono text-gold mb-1.5">Seleccionar carta para editar (<span id="selector-count-label">0</span> disponibles):</label>
-                        <select id="editor-card-selector" onchange="loadSelectedCardIntoForm()" class="w-full bg-void border border-gold/50 focus:border-gold text-white text-sm rounded-xl px-3.5 py-2.5 focus:outline-none cursor-pointer">
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <form id="editor-form" onsubmit="handleSaveCard(event)" class="bg-panel border border-gold/30 rounded-2xl p-6 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <input type="hidden" id="edit-id">
-
-                <div class="lg:col-span-5 space-y-5">
-                    <div class="flex items-center justify-between">
-                        <span id="editor-mode-badge" class="text-xs font-mono uppercase tracking-wider px-3 py-1 rounded-full bg-gold/20 text-gold border border-gold/40">
-                            Editando Carta
-                        </span>
-                        <button type="button" id="btn-delete-card" onclick="askDeleteCurrentCard()" class="text-xs font-mono text-rose-400 hover:text-rose-300 underline cursor-pointer">
-                            Eliminar esta carta
-                        </button>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-mono text-purple-200/90 mb-1.5">Título de la Carta *</label>
-                        <input type="text" id="edit-title" required class="w-full bg-void border border-gold/35 focus:border-gold text-white text-sm rounded-xl px-4 py-2.5 focus:outline-none">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-mono text-purple-200/90 mb-1.5">Categoría (1 a 10) *</label>
-                        <select id="edit-category" required class="w-full bg-void border border-gold/35 focus:border-gold text-white text-sm rounded-xl px-4 py-2.5 focus:outline-none cursor-pointer">
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-mono text-purple-200/90 mb-1.5">Etiqueta / Tipo</label>
-                        <input type="text" id="edit-tag" placeholder="Opcional" class="w-full bg-void border border-gold/35 focus:border-gold text-white text-sm rounded-xl px-4 py-2.5 focus:outline-none">
-                    </div>
-
-                    <div class="space-y-2.5 pt-2 border-t border-gold/15">
-                        <label class="block text-xs font-mono text-gold">Imagen de la Carta</label>
-                        
-                        <label class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-panelLight hover:bg-purple-800/80 border border-dashed border-gold/50 text-xs sm:text-sm text-white cursor-pointer transition">
-                            <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
-                            <span>Subir imagen desde archivo</span>
-                            <input type="file" id="edit-file-input" accept="image/*" onchange="processImageFile(event)" class="hidden">
-                        </label>
-
-                        <input type="text" id="edit-image-url" oninput="updatePreviewFromInput()" placeholder="O ruta/URL de imagen (ej: img/argentinazo.png)..." class="w-full bg-void border border-gold/30 focus:border-gold text-white text-xs rounded-xl px-3.5 py-2 focus:outline-none">
-
-                        <div class="relative rounded-xl overflow-hidden border border-gold/30 bg-void h-44 flex items-center justify-center">
-                            <img id="edit-image-preview" src="" alt="Vista previa" class="w-full h-full object-contain">
-                            <button type="button" id="btn-remove-img" onclick="removeCustomImage()" class="hidden absolute top-2 right-2 bg-black/80 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded-lg transition cursor-pointer">
-                                Quitar imagen
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-7 flex flex-col justify-between space-y-5">
-                    <div class="flex-1 flex flex-col space-y-2">
-                        <label for="edit-text" class="block text-xs font-mono text-purple-200/90">
-                            Lectura Oracular / Texto Poético Completo *
-                        </label>
-                        <textarea id="edit-text" rows="14" placeholder="Escribí aquí los versos, claves, reflexiones..." class="w-full flex-1 bg-void border border-gold/35 focus:border-gold text-white text-sm sm:text-base leading-relaxed rounded-xl p-4 focus:outline-none resize-y"></textarea>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row items-center justify-end gap-3 pt-2">
-                        <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-gold to-yellow-500 hover:from-yellow-400 hover:to-amber-300 text-void font-extrabold text-sm sm:text-base shadow-lg shadow-gold/20 active:scale-95 transition cursor-pointer">
-                            ✓ Guardar Cambios
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </section>
-    </main>
-
-    <footer class="border-t border-gold/20 py-6 mt-12 text-center text-xs font-mono text-purple-300/70">
-        ORÁCULO PERIFÉRICO — mazo de/codificacion comunitaria
-    </footer>
-
-    <script>
-        const STORAGE_KEY = 'oraculo_periferico_v5';
-
-        const CATEGORIES = [
-            "1. Cuerpo y vínculos",
-            "2. Estados y tránsitos internos",
-            "3. Ciudad y movilidad",
-            "4. Naturaleza",
-            "5. Los Enemigos",
-            "6. Resistencias, luchas y referentes",
-            "7. La cultura como arma",
-            "8. Mística y lo sagrado",
-            "9. Países y geopolítica",
-            "10. Llaves"
-        ];
-
-        const USER_FULL_TEXTS = {
-            "Dormir (El derecho a la pereza)": "• La crisis del sueño: En la sociedad hiperconectada de hoy, el sueño a menudo se sacrifica en pos de la productividad, el rendimiento laboral o el consumo nocturno.\n• El descanso como resistencia: Reclamar las horas necesarias de sueño y desconexión total se ha convertido en un acto de rebeldía frente a la cultura del burnout (desgaste profesional) y la glorificación del estar \"siempre ocupado\".\n• Salud y bienestar: Dormir bien y permitirse el ocio no son lujos, sino necesidades fisiológicas y emocionales esenciales que la obra de Lafargue anticipaba como derechos fundamentales arrebatados por la alienación del sistema.\n\nDescansa de la productividad, desconéctate, glorifica tu reposo en la pereza y quietud.\nEl ocio como derecho, tu salario también es el tiempo libre y energía que te quedó después de la jornada.\nDefiende tu tiempo libre para recuperar tu vida, cuida la pequeña muerte cotidiana, donde puedes recuperar energía cada día y darle un sentido a cada despertar.\nCela tu sueño de noche, donde la mente y el corazón desahogan la tensión.\nEn el descanso se curan y calman algunas heridas.\nDescansa para cuidar la llama.\nQue el dormir sin reloj no sea una utopía.\nQue tus sueños se hagan realidad mientras duermes.",
-            
-            "Eva 01 [T]": "Eva 01 berserker\nEscuchar el llamado, el latido de auxilio\nRetroceder para recuperar\nAtrapar la garra mientras se cree ganador,\nFrenar el brazo que golpea, cortarlo cuando se extendió\nSostener la tensión, como cuando se agarra el mango de un martillo\nEl objetivo es eliminar lo que amenaza a los hijos\nCorrer hacia los ojos y atacar en el centro\nLo que queda hacer es morder y devorar,\nAquello que nos cazaba ahora se convirtió en nuestra presa.\n\nAumentar la respiración\nSincronización con el animal\nSacrificar el dolor para enfrentar lo que quita la vida\nInstinto de madre, cuidar a toda costa al hijo\nDefender la humanidad con animalidad brutal\nAlimentarse del otro por supervivencia\nDe presa a depredador implacable\nEstado primario de defensa\nDefender el territorio y espacio personal\nRegeneración y recuperación.",
-
-            "Edu y el simbionte [T]": "Edu y el simbionte\nA dónde iremos, no se sabe pero quizás a donde necesiten protectores letales\nAceptarse a uno, incluso a las contradicciones\nExpresar el límite y normas de cada uno y de cada mundo\nCuando amas a alguien, aceptas a la persona completa incluso con sus defectos\nParasitarse para encontrar el lugar sano de cada uno\nComo villanos que se convierten en antihéroes\nNadie es perfecto\nCada huésped es único, y por eso cada experiencia es enseñanza\nAlimentar el parásito para poder convivir\nPérdida de control y reactividad\nLos cerebros son deliciosos.",
-
-            "El ogro / Shrek [T]": "El ogro\n¿Por qué la amabilidad?\nUna cara dice más que mil palabras, el ogro no cree en las adulaciones\nOgro en mano, ogro enano\nSolo quiere terminar su trabajo y estar tranquilo en su casa\nYa curtido del maltrato ajeno no confía fácilmente en los gestos,\nPor eso acostumbra a estar solo.\nOgro que ríe, no muerde\nInocente pero ya no se come cualquier chamullo\nFuerte pero sensible en su orgullo\nLos ogros son como cebollas\nMejor afuera que adentro, siempre lo he dicho\nMe juzgan sin siquiera conocerme\nAlgún día querrán visitar mi pantano\nNo soy un héroe, soy un desastre de alto funcionamiento\nA veces es hacer una cara y seguir camino.",
-
-            "Tío Iroh [T]": "El tío Iroh — El dragón del oeste\nDicen que el más rico es el que menos necesita y si el camino para el prestigio y status que buscamos implica perder lo que más amamos, ¿estamos dispuestos a pagar el precio?\nLa paciencia es un vehículo esencial para derrotar el dolor y la tristeza.\nAquel que conoció la guerra en carne propia, sabe el valor de paz y la coexistencia.\nEl orgullo de una nación no es solo valorar lo propio sino también aceptar lo desconocido y cómo puede integrar al otro para ser más completo.\nAquel que siendo el más poderoso de una nación prefiere ser un vendedor de blends de té es el que alcanza apreciar cada momento como único.\nLa humildad abre puertas inimaginables, incluso las del perdón y lo divino.\nLa humildad no es solo autoconocimiento sino reconocer los límites y virtudes de uno.\nEl orgullo es fuente para la vergüenza e ira.\nLa perfección y el poder se sobreestiman, es sabio elegir la felicidad y el amor.\nLa última técnica es poder dirigir el rayo y ser un conductor transitorio, no se alimenta de ira, requiere paz mental; la energía está en todas partes, cómo separas y canalizas ese relámpago: primero respira y crea un camino, siente el flujo.\nTomar la nación de la tierra para liberarla de la nación del fuego.\nBuscar terminar la guerra.\nEl destino es nuestro amigo.\nAyudar al idealista de corazón y honor incuestionable, al que luchó y sufrió y restauró su honor y puede restaurar el honor de la nación.\n¿Té delicioso o veneno mortal?\nBuscar ayuda del reino tierra.\nJugar juegos de mesa.\nCompartí un té con un desconocido.",
-
-            "Culpa": "¿Qué mandatos sociales y familiares llevamos? ¿Qué remordimiento sostenemos? ¿De qué manera queremos absolvernos?, ¿cómo redimimos nuestros errores?\n¿Qué cruz arrastramos? ¿Por qué nos martirizamos?\nO mejor nos preguntamos, de qué y para quién sirve la culpa:\nSi fallamos es producto de nuestra ignorancia\nSi erramos es parte del aprendizaje para tener sabiduría\nLa acción de cambio y responsabilidad para dejar el autocastigo\nUna atención plena, aceptando lo que no se puede cambiar y actuando desde la virtud\nSer íntegro y auténtico en asumir lo que elegimos\nHacernos cargo de las consecuencias sin remordimientos\nLa justicia que nos hace libres y no daña la humanidad\nEl deseo de cambio de la realidad desde la compasión profunda\nLa lealtad con uno mismo.",
-
-            "Plazas": "Salgamos del encierro\nVamos a la plaza, a tomar un poco de aire\nJuguemos en la hamaca\nO mejor en el sube y baja\nTambién está la calesita, a ver si tenemos suerte y podemos dar unas vueltas más\nDisfruta del verde pasto y la sombra de los árboles\nQue en un rato hay que volver a casa\nO sino sentémonos y quedémonos acá mientras vemos quien viene y va y pasa\nEl sol va a salir en algún momento y la gente va a venir.",
-
-            "Cotorra argentina [T]": "Cotorra argentina\nComunidad, comunicación\nAdvertir, vigilar\nCalor, territorio y jerarquía\nHacerse escuchar en el griterío\nRuido encimado invasor\nSostener la amistad, red de cuidados\nConfianza de expresión en el grupo\nMultitud y cercanía como defensa\nChillido de presencia y cantidad\nEl valor de estar a tu lado\nEspontánea gracia.",
-
-            "Río": "Agua dulce\nRefrescante y viva\nQue arrastra y empuja\nFluye sin importar la forma, no tiene resistencia porque no se apega al lugar\nEs suave y arrolladora al mismo tiempo\nQué dirección y por dónde pasan esos ríos\nQuién y para qué controlarlos\nSi no se cuida y respeta, puede ser una fuerza arrolladora incontrolable\nEscuchar el suelo y huele el ambiente para ver con qué ritmo viene\nNo critiques, que el agua escucha\nPuede haber rivalidad si no se comparte su cauce\nLíquido que lava\nBebe y sé cómo el agua\nAcércate a la orilla y espera\nNo es fácil cruzarlos así que apégate al plan\nHaz puentes para cruzarlos.",
-
-            "2001 + Helicóptero [T]": "2001\nRecetas del FMI, que traen la miseria conocida\nRecesión e inflación, densidad en la calle y ollas populares que sostienen\nEn ritmos de tambores nacen cooperativas\nEstado resignado, infunden miedo como herramienta disciplinatoria\nProvocar y hambrear a un pueblo harto y que no tiene nada para perder más que sus ataduras de gobiernos chantas\nOdio y descontento que alimentan nuestros espíritus de lucha\nAsambleas y reuniones barriales\nMovimiento de desocupados, trabajadores y ahorristas\nDescontento en medida de fuerza: cortar las rutas, puentes y accesos de la ciudad\nTomando la ciudad por asalto\nEl enfrentamiento físico y la cacería a lugares de resistencia\nMasacres planificadas, la sangre de luchadores no nos deja respirar\nRenuncia del gobierno y conciliación.\n\nHELICÓPTERO\nHélices del títere\nSeñal de escape del gobernante\nRuta de salida recomendada para el que se encuentra acorralado.\nEmergencia para toda la nación\nQue se vayan todos y no quede ni uno solo\nVehículo rápido con desenlace de renuncia\nCasa Rosada, rosa como la sangre de luchadorxs derramada\nNo hay vicepresidente\n¿Qué hacés cuando el poder se va por el aire y nadie atiende el teléfono?\nSolo queda tomar el poder."
-        };
-
-        const RAW_INVENTORY = [
-            { cat: 0, title: "Dormir (El derecho a la pereza)", tag: "Necesidad", text: USER_FULL_TEXTS["Dormir (El derecho a la pereza)"], img: "img/dormir.png" },
-            { cat: 0, title: "Comer", tag: "Necesidad", text: "", img: "img/comer.png" },
-            { cat: 0, title: "Cagar", tag: "Necesidad", text: "", img: "" },
-            { cat: 0, title: "Agua de tomar", tag: "Necesidad", text: "", img: "" },
-            { cat: 0, title: "Mate", tag: "Ritual", text: "", img: "" },
-            { cat: 0, title: "Fernet y Cinzano", tag: "Ritual", text: "", img: "" },
-            { cat: 0, title: "Cerveza y Vino", tag: "Ritual", text: "", img: "" },
-            { cat: 0, title: "Gaseosa", tag: "Ritual", text: "", img: "" },
-            { cat: 0, title: "Abuelos", tag: "Red", text: "", img: "" },
-            { cat: 0, title: "Familia", tag: "Red", text: "", img: "" },
-            { cat: 0, title: "Amigos", tag: "Red", text: "", img: "" },
-            { cat: 0, title: "Padre", tag: "Red", text: "", img: "" },
-            { cat: 0, title: "Madre", tag: "Red", text: "", img: "" },
-            { cat: 0, title: "Perros", tag: "Compañía", text: "", img: "" },
-            { cat: 0, title: "Gatos", tag: "Compañía", text: "", img: "" },
-
-            { cat: 1, title: "Eva 01 [T]", tag: "[T] Tránsito", text: USER_FULL_TEXTS["Eva 01 [T]"], img: "" },
-            { cat: 1, title: "Edu y el simbionte [T]", tag: "[T] Tránsito", text: USER_FULL_TEXTS["Edu y el simbionte [T]"], img: "" },
-            { cat: 1, title: "El ogro / Shrek [T]", tag: "[T] Tránsito", text: USER_FULL_TEXTS["El ogro / Shrek [T]"], img: "" },
-            { cat: 1, title: "Tío Iroh [T]", tag: "[T] Maestro", text: USER_FULL_TEXTS["Tío Iroh [T]"], img: "" },
-            { cat: 1, title: "Zuko", tag: "Tránsito", text: "", img: "" },
-            { cat: 1, title: "Duelo", tag: "Estado", text: "", img: "" },
-            { cat: 1, title: "Culpa", tag: "Estado", text: USER_FULL_TEXTS["Culpa"], img: "" },
-            { cat: 1, title: "Patologización", tag: "Alerta", text: "", img: "" },
-            { cat: 1, title: "Pesadillas", tag: "Estado", text: "", img: "" },
-            { cat: 1, title: "Sueños", tag: "Estado", text: "", img: "" },
-            { cat: 1, title: "El Séptimo Sello", tag: "Arquetipo", text: "", img: "" },
-            { cat: 1, title: "El Gato con Botas", tag: "Arquetipo", text: "", img: "" },
-            { cat: 1, title: "Demonios", tag: "Sombra", text: "", img: "" },
-
-            { cat: 2, title: "Barrio", tag: "Lugar", text: "", img: "" },
-            { cat: 2, title: "Plazas", tag: "Lugar", text: USER_FULL_TEXTS["Plazas"], img: "" },
-            { cat: 2, title: "Club de barrio", tag: "Lugar", text: "", img: "" },
-            { cat: 2, title: "The Walking Conurban", tag: "Crónica", text: "", img: "" },
-            { cat: 2, title: "Patio argentino", tag: "Lugar", text: "", img: "" },
-            { cat: 2, title: "Backrooms", tag: "Umbral", text: "", img: "" },
-            { cat: 2, title: "Colectivos", tag: "Tránsito", text: "", img: "" },
-            { cat: 2, title: "Tren Roca", tag: "Tránsito", text: "", img: "" },
-            { cat: 2, title: "Moto", tag: "Tránsito", text: "", img: "" },
-            { cat: 2, title: "Bici", tag: "Tránsito", text: "", img: "" },
-            { cat: 2, title: "Avión", tag: "Tránsito", text: "", img: "" },
-            { cat: 2, title: "SUBE", tag: "Llave urbana", text: "", img: "" },
-            { cat: 2, title: "Celular", tag: "Conexión", text: "", img: "" },
-            { cat: 2, title: "Drone", tag: "Conexión", text: "", img: "" },
-            { cat: 2, title: "Wifi/5G", tag: "Conexión", text: "", img: "" },
-
-            { cat: 3, title: "Cotorra argentina [T]", tag: "[T] Fauna", text: USER_FULL_TEXTS["Cotorra argentina [T]"], img: "" },
-            { cat: 3, title: "Carpincho [meme]", tag: "[meme] Fauna", text: "", img: "" },
-            { cat: 3, title: "Chingolo", tag: "Fauna", text: "", img: "" },
-            { cat: 3, title: "Hornero", tag: "Fauna", text: "", img: "" },
-            { cat: 3, title: "Zorzal y Calandria", tag: "Fauna", text: "", img: "" },
-            { cat: 3, title: "Pirincho", tag: "Fauna", text: "", img: "" },
-            { cat: 3, title: "Insectos de barrio", tag: "Fauna", text: "", img: "" },
-            { cat: 3, title: "Plantas de hogar", tag: "Flora", text: "", img: "" },
-            { cat: 3, title: "Plantas nativas", tag: "Flora", text: "", img: "" },
-            { cat: 3, title: "Montaña", tag: "Geografía", text: "", img: "" },
-            { cat: 3, title: "Río", tag: "Geografía", text: USER_FULL_TEXTS["Río"], img: "" },
-            { cat: 3, title: "Mar", tag: "Geografía", text: "", img: "" },
-            { cat: 3, title: "Monte", tag: "Geografía", text: "", img: "" },
-            { cat: 3, title: "Bosque", tag: "Geografía", text: "", img: "" },
-            { cat: 3, title: "Campo", tag: "Geografía", text: "", img: "" },
-            { cat: 3, title: "Fenómenos climáticos", tag: "Clima", text: "", img: "" },
-
-            { cat: 4, title: "Mercadomecago", tag: "Enemigo", text: "", img: "" },
-            { cat: 4, title: "Oligarcas", tag: "Enemigo", text: "", img: "" },
-            { cat: 4, title: "Militares de regiones", tag: "Enemigo", text: "", img: "" },
-            { cat: 4, title: "Musk", tag: "Enemigo", text: "", img: "" },
-            { cat: 4, title: "Zuckerberg", tag: "Enemigo", text: "", img: "" },
-            { cat: 4, title: "Thiel", tag: "Enemigo", text: "", img: "" },
-            { cat: 4, title: "Trump", tag: "Enemigo", text: "", img: "" },
-            { cat: 4, title: "Sionistas", tag: "Enemigo", text: "", img: "" },
-
-            { cat: 5, title: "Operario de fábrica", tag: "Cuerpo", text: "", img: "" },
-            { cat: 5, title: "Albañil", tag: "Cuerpo", text: "", img: "" },
-            { cat: 5, title: "Empleado de comercio", tag: "Cuerpo", text: "", img: "" },
-            { cat: 5, title: "Rappi", tag: "Cuerpo", text: "", img: "" },
-            { cat: 5, title: "Jubilados", tag: "Lucha", text: "", img: "" },
-            { cat: 5, title: "Discapacitados", tag: "Lucha", text: "", img: "" },
-            { cat: 5, title: "Comunidad trans", tag: "Lucha", text: "", img: "" },
-            { cat: 5, title: "Universidad", tag: "Lucha", text: "", img: "" },
-            { cat: 5, title: "Pueblos originarios", tag: "Lucha", text: "", img: "" },
-            { cat: 5, title: "Asamblea barrial", tag: "Organización", text: "", img: "" },
-            { cat: 5, title: "Sindicatos y partidos", tag: "Organización", text: "", img: "" },
-            { cat: 5, title: "2001 + Helicóptero [T]", tag: "[T] Memoria", text: USER_FULL_TEXTS["2001 + Helicóptero [T]"], img: "" },
-            { cat: 5, title: "Argentinazo", tag: "Memoria", text: "", img: "img/argentinazo.png" },
-            { cat: 5, title: "Malvinas + Messi/ingleses [meme]", tag: "[meme] Memoria", text: "", img: "" },
-            { cat: 5, title: "El agua vale más que el oro", tag: "Consigna", text: "", img: "" },
-            { cat: 5, title: "Bregman", tag: "Pensamiento", text: "", img: "" },
-            { cat: 5, title: "Silvestri", tag: "Pensamiento", text: "", img: "" },
-            { cat: 5, title: "Preciado", tag: "Pensamiento", text: "", img: "" },
-            { cat: 5, title: "Hegel", tag: "Pensamiento", text: "", img: "" },
-
-            { cat: 6, title: "Nujabes/Lofi", tag: "Música", text: "", img: "" },
-            { cat: 6, title: "RATM", tag: "Música", text: "", img: "" },
-            { cat: 6, title: "Milo J", tag: "Música", text: "", img: "" },
-            { cat: 6, title: "Duki", tag: "Música", text: "", img: "" },
-            { cat: 6, title: "El Noba y L-Gante", tag: "Música", text: "", img: "" },
-            { cat: 6, title: "Luca Prodan", tag: "Música", text: "", img: "" },
-            { cat: 6, title: "Indio Solari", tag: "Música", text: "", img: "" },
-            { cat: 6, title: "Sandro", tag: "Música", text: "", img: "" },
-            { cat: 6, title: "Leo Mattioli", tag: "Música", text: "", img: "" },
-            { cat: 6, title: "Ozuna", tag: "Música", text: "", img: "" },
-            { cat: 6, title: "Himno", tag: "Música", text: "", img: "" },
-            { cat: 6, title: "Canciones ancestrales", tag: "Música", text: "", img: "" },
-            { cat: 6, title: "Canciones populares", tag: "Música", text: "", img: "" },
-            { cat: 6, title: "Esperando la carroza", tag: "Pantalla", text: "", img: "" },
-            { cat: 6, title: "Autopsia de alien en Chiche Gelblung", tag: "[meme] Pantalla", text: "", img: "" },
-            { cat: 6, title: "Tortugas Ninja", tag: "Pantalla", text: "", img: "" },
-            { cat: 6, title: "Muad’Dib", tag: "Pantalla", text: "", img: "" },
-            { cat: 6, title: "The Northman", tag: "Pantalla", text: "", img: "" },
-            { cat: 6, title: "Ready Player One", tag: "Pantalla", text: "", img: "" },
-            { cat: 6, title: "Mickey 17", tag: "Pantalla", text: "", img: "" },
-            { cat: 6, title: "Snake", tag: "Juego", text: "", img: "" },
-            { cat: 6, title: "Counter", tag: "Juego", text: "", img: "" },
-            { cat: 6, title: "PES", tag: "Juego", text: "", img: "" },
-            { cat: 6, title: "Pump It Up", tag: "Juego", text: "", img: "" },
-            { cat: 6, title: "Mario/Sonic", tag: "Juego", text: "", img: "" },
-            { cat: 6, title: "Street Fighter/Mortal Kombat", tag: "Juego", text: "", img: "" },
-            { cat: 6, title: "Cyberpunk 2077", tag: "Juego", text: "", img: "" },
-
-            { cat: 7, title: "Virgen de Luján", tag: "Sagrado", text: "", img: "" },
-            { cat: 7, title: "Virgen María", tag: "Sagrado", text: "", img: "" },
-            { cat: 7, title: "Iemanjá", tag: "Sagrado", text: "", img: "" },
-            { cat: 7, title: "Santos católicas", tag: "Sagrado", text: "", img: "" },
-            { cat: 7, title: "Constantine", tag: "Mística", text: "", img: "" },
-            { cat: 7, title: "Mahoraga", tag: "Mística", text: "", img: "" },
-            { cat: 7, title: "Oxum", tag: "Sagrado", text: "", img: "" },
-            { cat: 7, title: "Intuición y Revelación", tag: "Sagrado", text: "", img: "" },
-            { cat: 7, title: "Espíritus", tag: "Sagrado", text: "", img: "" },
-
-            { cat: 8, title: "China", tag: "Geopolítica", text: "", img: "" },
-            { cat: 8, title: "EEUU", tag: "Geopolítica", text: "", img: "" },
-            { cat: 8, title: "Rusia", tag: "Geopolítica", text: "", img: "" },
-            { cat: 8, title: "Brasil", tag: "Geopolítica", text: "", img: "" },
-            { cat: 8, title: "Argentina", tag: "Geopolítica", text: "", img: "" },
-            { cat: 8, title: "Territorios", tag: "Geopolítica", text: "", img: "" },
-
-            { cat: 9, title: "Llave del Umbral", tag: "LLAVE DE PODER", text: "", img: "" },
-            { cat: 9, title: "Llave de la Memoria", tag: "LLAVE DE PODER", text: "", img: "" },
-            { cat: 9, title: "Llave del Cuerpo", tag: "LLAVE DE PODER", text: "", img: "" },
-            { cat: 9, title: "Llave de la Calle", tag: "LLAVE DE PODER", text: "", img: "" },
-            { cat: 9, title: "Llave del Fuego", tag: "LLAVE DE PODER", text: "", img: "" },
-            { cat: 9, title: "Llave del Monte", tag: "LLAVE DE PODER", text: "", img: "" }
-        ];
-
-        let deck = [];
-        let selectedCardsForSpread = [];
-
-        window.onload = function() {
-            loadDeckFromStorage();
-            initCategorySelects();
-            updateCounts();
-            renderGallery();
-            populateEditorDropdown();
-            if (deck.length > 0) {
-                document.getElementById('editor-card-selector').value = deck[0].id;
-                loadSelectedCardIntoForm();
-            }
-        };
-
-        function buildDefaultDeck() {
-            return RAW_INVENTORY.map((item, idx) => ({
-                id: 'card_' + (idx + 1),
-                title: item.title,
-                category: CATEGORIES[item.cat],
-                tag: item.tag || '',
-                image: item.img || '',
-                text: item.text || ''
-            }));
+        for (const candidate of ['main', 'master']) {
+          const res = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/git/trees/${candidate}?recursive=1`);
+          if (res.ok) {
+            branch = candidate;
+            treeData = await res.json();
+            break;
+          }
         }
 
-        function loadDeckFromStorage() {
-            try {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        deck = parsed;
-                        return;
-                    }
-                }
-            } catch (e) {
-                console.error("Error leyendo localStorage:", e);
-            }
-            deck = buildDefaultDeck();
-            saveDeckToStorage();
+        if (!treeData || !treeData.tree) {
+          throw new Error('No se pudo leer el árbol del repositorio');
         }
 
-        function saveDeckToStorage() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(deck));
-                updateCounts();
-                return true;
-            } catch (e) {
-                showToast('El almacenamiento del navegador está lleno. Exportá tu mazo en JSON.', 'error');
-                return false;
-            }
-        }
+        const imageExts = /\.(png|jpg|jpeg|webp|gif)$/i;
+        const ignoreNames = /(favicon|logo|banner|icon|bg|background|reverso|back)/i;
 
-        function updateCounts() {
-            document.getElementById('total-cards-badge').textContent = deck.length;
-        }
-
-        function initCategorySelects() {
-            const galSelect = document.getElementById('gallery-cat-select');
-            const editSelect = document.getElementById('edit-category');
-            
-            CATEGORIES.forEach(cat => {
-                if (galSelect) {
-                    const opt1 = document.createElement('option');
-                    opt1.value = cat;
-                    opt1.textContent = cat;
-                    galSelect.appendChild(opt1);
-                }
-                if (editSelect) {
-                    const opt2 = document.createElement('option');
-                    opt2.value = cat;
-                    opt2.textContent = cat;
-                    editSelect.appendChild(opt2);
-                }
-            });
-        }
-
-        function switchTab(tabName) {
-            ['tirada', 'galeria', 'editor'].forEach(t => {
-                document.getElementById('tab-' + t).classList.add('hidden');
-                const btn = document.getElementById('nav-' + t);
-                btn.className = 'nav-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all text-purple-200 hover:text-white hover:bg-panelLight cursor-pointer';
-            });
-
-            document.getElementById('tab-' + tabName).classList.remove('hidden');
-            const activeBtn = document.getElementById('nav-' + tabName);
-            activeBtn.className = 'nav-btn flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-semibold transition-all bg-gold text-void shadow-md cursor-pointer';
-
-            if (tabName === 'galeria') renderGallery();
-            if (tabName === 'editor') populateEditorDropdown();
-        }
-
-        function getFallbackCardArt(category, title) {
-            const catNum = category.split('.')[0] || '✦';
-            const icons = {
-                '1': '♥', '2': '◈', '3': '❖', '4': '❀', '5': '⚔',
-                '6': '✊', '7': '♫', '8': '☀☾', '9': '⊕', '10': '🗝'
+        repoImages = treeData.tree
+          .filter(item => item.type === 'blob' && imageExts.test(item.path))
+          .map(item => {
+            const filename = item.path.split('/').pop();
+            const cleanName = filename.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').trim();
+            const rawUrl = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${branch}/${encodeURI(item.path)}`;
+            return {
+              path: item.path,
+              filename,
+              cleanName,
+              norm: normalizeStr(cleanName),
+              url: rawUrl,
+              isIgnored: ignoreNames.test(filename)
             };
-            const symbol = icons[catNum] || '✦';
-            const cleanTitle = (title || '').replace(/[<>&'"]/g, '').substring(0, 26);
-            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240">
-                <defs>
-                    <radialGradient id="g" cx="50%" cy="50%" r="65%">
-                        <stop offset="0%" stop-color="#3b1d66"/>
-                        <stop offset="100%" stop-color="#130921"/>
-                    </radialGradient>
-                </defs>
-                <rect width="400" height="240" fill="url(#g)"/>
-                <circle cx="200" cy="105" r="54" fill="none" stroke="#eab308" stroke-width="1.5" stroke-opacity="0.45"/>
-                <circle cx="200" cy="105" r="44" fill="none" stroke="#eab308" stroke-width="0.8" stroke-dasharray="4 4" stroke-opacity="0.6"/>
-                <text x="200" y="118" font-family="serif" font-size="38" fill="#eab308" text-anchor="middle">${symbol}</text>
-                <text x="200" y="198" font-family="monospace" font-size="13" fill="#e9d5ff" text-anchor="middle" opacity="0.85">${cleanTitle}</text>
-            </svg>`;
-            return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
-        }
+          });
 
-        function pinQuestion() {
-            const val = document.getElementById('question-input').value.trim();
-            if (!val) {
-                showToast('Escribí una pregunta primero.', 'info');
-                return;
-            }
-            document.getElementById('pinned-question-text').textContent = `“${val}”`;
-            document.getElementById('pinned-question-box').classList.remove('hidden');
-            showToast('Consulta fijada en la mesa.', 'success');
-        }
+        // 1. Vincular imágenes a las cartas ya existentes (escritas o editadas)
+        const usedUrls = new Set();
 
-        function clearPinnedQuestion() {
-            document.getElementById('pinned-question-box').classList.add('hidden');
-            document.getElementById('question-input').value = '';
-        }
+        deck.forEach(card => {
+          if (card.image) {
+            usedUrls.add(card.image);
+            return;
+          }
+          const cardNorm = normalizeStr(card.title);
+          const keywords = (card.keywords || cardNorm.split(' ')).map(normalizeStr).filter(Boolean);
 
-        function initSpreadDealing() {
-            if (deck.length === 0) {
-                showToast('No hay cartas en el mazo.', 'error');
-                return;
-            }
+          // Coincidencia exacta o por palabras clave
+          let match = repoImages.find(img => !img.isIgnored && img.norm === cardNorm);
+          if (!match) {
+            match = repoImages.find(img => !img.isIgnored && keywords.some(kw => kw.length >= 3 && img.norm.includes(kw)));
+          }
+          if (match) {
+            card.image = match.url;
+            usedUrls.add(match.url);
+          }
+        });
 
-            const qVal = document.getElementById('question-input').value.trim();
-            if (qVal) {
-                document.getElementById('pinned-question-text').textContent = `“${qVal}”`;
-                document.getElementById('pinned-question-box').classList.remove('hidden');
-            }
+        // 2. Incorporar TODAS las demás imágenes del repo como cartas sin texto (si aún no están en el mazo)
+        let addedUnwritten = 0;
+        repoImages.forEach(img => {
+          if (img.isIgnored) return;
+          if (usedUrls.has(img.url)) return;
 
-            const writtenCards = deck.filter(c => c.text && c.text.trim() !== '');
-            if (writtenCards.length === 0) {
-                showToast('Aún no hay cartas con texto escrito para repartir.', 'error');
-                return;
-            }
-
-            const spreadType = document.getElementById('spread-selector').value;
-            let positions = [];
-
-            if (spreadType === '1') positions = ['Mensaje del día'];
-            else if (spreadType === 'energia') positions = ['Energía actual', 'Consejo'];
-            else if (spreadType === '3') positions = ['Pasado', 'Presente', 'Horizonte'];
-            else if (spreadType === 'tactica') positions = ['Lo que uno tiene débil', 'Lo fuerte donde defender', 'Qué hay que jerarquizar', 'Acción táctica'];
-            else if (spreadType === 'dimensiones') positions = ['Pensamiento', 'Sentimientos', 'Intención', 'Acción'];
-            else if (spreadType === 'caminos') positions = ['Situación', 'Desafío', 'Consejo', 'Posible resultado'];
-            else if (spreadType === 'llave') {
-                const keys = writtenCards.filter(c => c.category.startsWith('10.'));
-                const others = writtenCards.filter(c => !c.category.startsWith('10.'));
-                const three = pickRandom(others.length >= 3 ? others : writtenCards, 3);
-                const oneKey = keys.length > 0 ? pickRandom(keys, 1)[0] : pickRandom(writtenCards, 1)[0];
-                selectedCardsForSpread = [...three, oneKey];
-                
-                document.getElementById('table-empty').classList.add('hidden');
-                document.getElementById('deck-pool-grid').classList.add('hidden');
-                document.getElementById('selection-banner').classList.add('hidden');
-                renderFinalSpread(positions);
-                return;
-            }
-
-            const requiredCount = positions.length;
-            if (writtenCards.length < requiredCount) {
-                showToast(`Esta tirada requiere ${requiredCount} cartas escritas (tenés ${writtenCards.length}).`, 'error');
-                return;
-            }
-
-            selectedCardsForSpread = pickRandom(writtenCards, requiredCount);
-
-            document.getElementById('table-empty').classList.add('hidden');
-            document.getElementById('deck-pool-grid').classList.add('hidden');
-            document.getElementById('selection-banner').classList.add('hidden');
-
-            renderFinalSpread(positions);
-        }
-
-        function renderFinalSpread(positions) {
-            const grid = document.getElementById('dealt-grid');
-            document.getElementById('selected-slots-container').classList.remove('hidden');
-            document.getElementById('table-controls').classList.remove('hidden');
-
-            let gridClasses = 'w-full max-w-sm mx-auto grid grid-cols-1 gap-6 items-stretch justify-items-center';
-            if (selectedCardsForSpread.length === 2) gridClasses = 'w-full max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10 items-stretch justify-items-center';
-            else if (selectedCardsForSpread.length === 3) gridClasses = 'w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch justify-items-center';
-            else if (selectedCardsForSpread.length === 4) gridClasses = 'w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch justify-items-center';
-            grid.className = gridClasses;
-
-            grid.innerHTML = '';
-
-            selectedCardsForSpread.forEach((card, i) => {
-                const posName = positions[i] || `Posición ${i + 1}`;
-                const isKey = card.category.startsWith('10.');
-                const imgSource = card.image ? card.image : getFallbackCardArt(card.category, card.title);
-
-                const col = document.createElement('div');
-                col.className = 'w-full max-w-[310px] flex flex-col items-center gap-3 animate-deal';
-                col.style.animationDelay = `${i * 90}ms`;
-
-                col.innerHTML = `
-                    <span class="text-xs font-mono uppercase tracking-widest px-3 py-1 rounded-full ${isKey ? 'bg-gold/20 text-gold border border-gold/50 font-bold' : 'bg-panel text-gold border border-gold/25'}">
-                        ${posName}
-                    </span>
-
-                    <div onclick="this.querySelector('.card-flipper').classList.toggle('is-flipped')" class="perspective-container w-full h-[460px] cursor-pointer group select-none">
-                        <div class="card-flipper">
-                            <div class="card-face card-back-design border-2 ${isKey ? 'border-gold' : 'border-gold/50'} p-4 flex flex-col items-center justify-center text-center shadow-2xl group-hover:border-gold group-hover:shadow-[0_0_25px_rgba(234,179,8,0.25)] transition-all">
-                                <div class="w-full h-full border border-gold/30 rounded-xl flex flex-col items-center justify-center p-4">
-                                    <div class="w-16 h-16 rounded-full bg-void/80 border border-gold/50 flex items-center justify-center text-gold mb-4 group-hover:scale-110 transition-transform">
-                                        <span class="text-2xl">☀☾☿</span>
-                                    </div>
-                                    <p class="font-serif text-sm font-bold tracking-widest text-gold uppercase">Oráculo Periférico</p>
-                                    <span class="mt-2 text-xs font-mono text-purple-200/80 bg-void/60 px-3 py-1 rounded-lg border border-gold/20">${posName}</span>
-                                    <p class="mt-5 text-[11px] font-mono text-gold/80 animate-pulse">Tocá para revelar</p>
-                                </div>
-                            </div>
-
-                            <div class="card-face card-front bg-panel border-2 ${isKey ? 'border-gold shadow-[0_0_30px_rgba(234,179,8,0.25)]' : 'border-gold/50 shadow-2xl'} flex flex-col justify-between text-left">
-                                <div>
-                                    <div class="px-3.5 py-2 bg-void/90 border-b border-gold/20 flex items-center justify-between gap-2">
-                                        <span class="text-[10px] font-mono text-gold truncate">${card.category}</span>
-                                        ${card.tag ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-panelLight text-purple-200 shrink-0">${card.tag}</span>` : ''}
-                                    </div>
-                                    <div class="h-40 w-full bg-void overflow-hidden border-b border-gold/20">
-                                        <img src="${imgSource}" alt="${card.title}" onerror="this.src='${getFallbackCardArt(card.category, card.title)}'" class="w-full h-full object-cover">
-                                    </div>
-                                </div>
-
-                                <div class="p-4 flex-1 flex flex-col justify-between overflow-y-auto">
-                                    <div>
-                                        <h3 class="font-serif text-base sm:text-lg font-bold text-white leading-snug mb-2">${card.title}</h3>
-                                        <p class="text-xs sm:text-sm text-purple-100/90 leading-relaxed whitespace-pre-line">${card.text}</p>
-                                    </div>
-                                </div>
-
-                                <div class="px-4 py-2 bg-void/80 border-t border-gold/20 flex items-center justify-between">
-                                    <span class="text-[10px] font-mono text-purple-300/60">Clic para voltear</span>
-                                    <button type="button" onclick="event.stopPropagation(); openDetailModal('${card.id}', '${posName}')" class="text-xs font-mono text-gold hover:text-yellow-300 underline cursor-pointer">Ampliar lectura</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(col);
+          const alreadyExists = deck.some(c => c.image === img.url || normalizeStr(c.title) === img.norm);
+          if (!alreadyExists) {
+            const niceTitle = img.cleanName.charAt(0).toUpperCase() + img.cleanName.slice(1);
+            deck.push({
+              id: 'repo-' + normalizeStr(img.path).replace(/\s+/g, '-'),
+              title: niceTitle,
+              keywords: img.norm.split(' '),
+              image: img.url,
+              text: ''
             });
+            usedUrls.add(img.url);
+            addedUnwritten++;
+          }
+        });
 
-            showToast('Tirada repartida. ¡Hacé clic en las cartas para revelarlas!', 'success');
-        }
+        populateImageSelector();
+        saveDeck();
+        renderDeckGrid();
+        if (currentDrawn.length === 0) drawSpread();
 
-        function resetSpread() {
-            document.getElementById('selected-slots-container').classList.add('hidden');
-            document.getElementById('table-controls').classList.add('hidden');
-            document.getElementById('table-empty').classList.remove('hidden');
-            selectedCardsForSpread = [];
-        }
+        dot.className = 'dot';
+        const writtenCount = deck.filter(c => c.text && c.text.trim().length > 0).length;
+        const unwrittenCount = deck.length - writtenCount;
+        status.textContent = `Repo sincronizado: ${deck.length} cartas totales (${writtenCount} escritas · ${unwrittenCount} sin texto todavía).`;
+      } catch (err) {
+        dot.className = 'dot warn';
+        status.textContent = `Modo local activo (${deck.length} cartas). Podés sincronizar o editar imágenes manualmente.`;
+        saveDeck();
+        renderDeckGrid();
+        if (currentDrawn.length === 0) drawSpread();
+      }
+    }
 
-        function pickRandom(arr, count) {
-            const copy = [...arr];
-            for (let i = copy.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [copy[i], copy[j]] = [copy[j], copy[i]];
-            }
-            return copy.slice(0, Math.min(count, copy.length));
-        }
+    function populateImageSelector() {
+      const sel = document.getElementById('edit-repo-image-select');
+      sel.innerHTML = '<option value="">-- Elegir imagen del repo --</option>';
+      repoImages.forEach(img => {
+        const opt = document.createElement('option');
+        opt.value = img.url;
+        opt.textContent = img.path;
+        sel.appendChild(opt);
+      });
+    }
 
-        function renderGallery() {
-            const search = document.getElementById('gallery-search-input').value.toLowerCase().trim();
-            const catFilter = document.getElementById('gallery-cat-select').value;
-            const container = document.getElementById('gallery-container');
+    function updateCounters() {
+      document.getElementById('count-total').textContent = deck.length;
+    }
 
-            const filtered = deck.filter(c => {
-                const matchesCat = catFilter === 'all' || c.category === catFilter;
-                const matchesText = !search || 
-                    c.title.toLowerCase().includes(search) || 
-                    c.text.toLowerCase().includes(search) ||
-                    (c.tag && c.tag.toLowerCase().includes(search));
-                return matchesCat && matchesText;
-            });
+    function getPlayableDeck() {
+      const includeUnwritten = document.getElementById('include-unwritten').checked;
+      if (includeUnwritten) return [...deck];
+      const filtered = deck.filter(c => c.text && c.text.trim().length > 0);
+      return filtered.length > 0 ? filtered : [...deck];
+    }
 
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="col-span-full text-center py-12 text-purple-200/70 font-mono text-sm">No se encontraron cartas con ese filtro.</div>`;
-                return;
-            }
+    function drawSpread() {
+      const pool = getPlayableDeck();
+      const slots = SPREADS[currentSpread];
+      const board = document.getElementById('spread-board');
+      board.innerHTML = '';
 
-            container.innerHTML = filtered.map(card => {
-                const imgSource = card.image ? card.image : getFallbackCardArt(card.category, card.title);
-                const isKey = card.category.startsWith('10.');
-                const hasText = card.text && card.text.trim() !== '';
+      // Mezcla Fisher-Yates
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
 
-                return `
-                    <article onclick="openDetailModal('${card.id}')" class="bg-panel border ${isKey ? 'border-gold/60' : 'border-gold/25'} hover:border-gold rounded-2xl overflow-hidden shadow-lg hover:shadow-[0_0_25px_rgba(234,179,8,0.18)] transition flex flex-col justify-between cursor-pointer group">
-                        <div>
-                            <div class="px-3.5 py-2 bg-void/80 border-b border-gold/15 flex items-center justify-between gap-2">
-                                <span class="text-[10px] font-mono text-gold truncate">${card.category}</span>
-                                ${card.tag ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-panelLight text-purple-200 shrink-0">${card.tag}</span>` : ''}
-                            </div>
-                            <div class="h-40 bg-void overflow-hidden border-b border-gold/15">
-                                <img src="${imgSource}" alt="${card.title}" onerror="this.src='${getFallbackCardArt(card.category, card.title)}'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            </div>
-                            <div class="p-4 space-y-2">
-                                <h3 class="font-serif text-base font-bold text-white group-hover:text-gold transition">${card.title}</h3>
-                                ${hasText ? 
-                                    `<p class="text-xs text-purple-100/80 line-clamp-4 leading-relaxed whitespace-pre-line">${card.text}</p>` :
-                                    `<span class="text-[11px] font-mono text-gold/60 italic bg-void/60 px-2 py-1 rounded border border-gold/15 inline-block">Pendiente de escritura</span>`
-                                }
-                            </div>
-                        </div>
-                        <div class="px-4 py-2.5 bg-void/50 border-t border-gold/15 flex items-center justify-between">
-                            <span class="text-[11px] font-mono text-gold/90">${hasText ? 'Leer completa →' : 'Ver detalle'}</span>
-                            <button type="button" onclick="event.stopPropagation(); jumpToEdit('${card.id}')" class="text-[11px] font-mono text-purple-300 hover:text-white underline cursor-pointer">
-                                Editar
-                            </button>
-                        </div>
-                    </article>
-                `;
-            }).join('');
-        }
+      currentDrawn = pool.slice(0, slots.length);
 
-        function openDetailModal(cardId, positionLabel = '') {
-            const card = deck.find(c => c.id === cardId);
-            if (!card) return;
+      slots.forEach((slot, idx) => {
+        const card = currentDrawn[idx];
+        if (!card) return;
 
-            const imgSource = card.image ? card.image : getFallbackCardArt(card.category, card.title);
-            const hasText = card.text && card.text.trim() !== '';
-            const body = document.getElementById('detail-modal-body');
+        const hasText = card.text && card.text.trim().length > 0;
+        const cardIndex = deck.findIndex(c => c.id === card.id) + 1;
 
-            body.innerHTML = `
-                <div class="bg-void px-5 py-3.5 border-b border-gold/30 flex items-center justify-between gap-2">
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <span class="text-xs font-mono text-gold font-semibold">${card.category}</span>
-                        ${positionLabel ? `<span class="text-xs font-mono px-2.5 py-0.5 rounded-full bg-gold text-void font-bold">${positionLabel}</span>` : ''}
-                    </div>
-                    <button onclick="closeDetailModal()" class="text-purple-200 hover:text-white text-lg px-2 cursor-pointer">✕</button>
+        const slotEl = document.createElement('div');
+        slotEl.className = 'slot';
+        slotEl.innerHTML = `
+          <div class="slot-header">
+            <span class="slot-symbol">${slot.symbol}</span>
+            <div class="slot-title">${slot.title}</div>
+            <div class="slot-sub">${slot.sub}</div>
+          </div>
+
+          <div class="card-scene" data-idx="${idx}">
+            <div class="card-inner">
+              <div class="card-face card-back">
+                <div class="card-back-frame">
+                  <div class="card-back-symbols">☉ ☽ ☿</div>
+                  <div class="card-back-label">Oráculo Periférico</div>
+                  <span style="font-size:0.72rem; color:var(--text-muted);">Tocá para revelar</span>
                 </div>
-                <div class="max-h-72 w-full bg-void overflow-hidden border-b border-gold/25 flex items-center justify-center">
-                    <img src="${imgSource}" alt="${card.title}" onerror="this.src='${getFallbackCardArt(card.category, card.title)}'" class="w-full max-h-72 object-contain">
+              </div>
+
+              <div class="card-face card-front">
+                <div class="card-art">
+                  <span class="badge-num">#${String(cardIndex).padStart(2, '0')}</span>
+                  ${!hasText ? '<span class="badge-unwritten">SIN TEXTO</span>' : ''}
+                  ${
+                    card.image
+                      ? `<img src="${card.image}" alt="${card.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                         <div class="card-art-placeholder" style="display:none;">
+                           <span style="font-size:1.8rem;">☉ ☽ ☿</span>
+                           <strong>${card.title}</strong>
+                         </div>`
+                      : `<div class="card-art-placeholder">
+                           <span style="font-size:1.8rem;">☉ ☽ ☿</span>
+                           <strong>${card.title}</strong>
+                           <span style="font-size:0.75rem; color:var(--text-muted);">Imagen pendiente en repo</span>
+                         </div>`
+                  }
                 </div>
-                <div class="p-6 space-y-4 max-h-[55vh] overflow-y-auto">
-                    <div class="flex items-center justify-between gap-2">
-                        <h2 class="font-serif text-2xl font-bold text-gold">${card.title}</h2>
-                        ${card.tag ? `<span class="text-xs font-mono px-2.5 py-1 rounded-lg bg-panelLight text-purple-200 border border-gold/25">${card.tag}</span>` : ''}
-                    </div>
-                    ${hasText ? 
-                        `<p class="text-sm sm:text-base text-purple-50 leading-relaxed whitespace-pre-line">${card.text}</p>` :
-                        `<p class="text-sm font-mono text-gold/80 italic text-center py-6">Esta carta aún está pendiente de escritura comunitaria.</p>`
-                    }
-                </div>
-                <div class="px-6 py-3.5 bg-void/80 border-t border-gold/25 flex justify-between items-center">
-                    <button onclick="closeDetailModal(); jumpToEdit('${card.id}')" class="text-xs font-mono text-gold hover:underline cursor-pointer">
-                        ⚙ Editar / Escribir texto de esta carta
+                <div class="card-body">
+                  <div class="card-title">${card.title}</div>
+                  <div class="card-verses">${
+                    hasText
+                      ? escapeHtml(card.text)
+                      : '<em style="color:var(--text-muted);">Esta carta ya forma parte del mazo visual pero aún no tiene versos escritos. Podés escribir su lectura ahora mismo.</em>'
+                  }</div>
+                  <div class="card-actions">
+                    <button class="btn" style="font-size:0.76rem; padding:0.35rem 0.65rem;" onclick="event.stopPropagation(); openEditModal('${card.id}')">
+                      ✎ ${hasText ? 'Editar carta' : 'Escribir texto'}
                     </button>
-                    <button onclick="closeDetailModal()" class="px-4 py-1.5 rounded-xl bg-panelLight hover:bg-purple-800 text-white text-xs font-semibold cursor-pointer">
-                        Cerrar
-                    </button>
+                  </div>
                 </div>
-            `;
+              </div>
+            </div>
+          </div>
+        `;
 
-            const modal = document.getElementById('detail-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
+        const scene = slotEl.querySelector('.card-scene');
+        scene.addEventListener('click', () => {
+          scene.classList.toggle('flipped');
+        });
 
-        function closeDetailModal() {
-            const modal = document.getElementById('detail-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
+        board.appendChild(slotEl);
+      });
+    }
 
-        function populateEditorDropdown() {
-            const filterText = document.getElementById('editor-filter-input').value.toLowerCase().trim();
-            const selector = document.getElementById('editor-card-selector');
-            const currentVal = selector.value;
+    function renderDeckGrid() {
+      const grid = document.getElementById('deck-grid');
+      const query = normalizeStr(document.getElementById('search-deck').value);
+      const filter = document.getElementById('filter-deck').value;
 
-            const matches = deck.filter(c => 
-                !filterText || 
-                c.title.toLowerCase().includes(filterText) || 
-                c.category.toLowerCase().includes(filterText)
-            );
+      grid.innerHTML = '';
 
-            document.getElementById('selector-count-label').textContent = matches.length;
+      deck.forEach((card, idx) => {
+        const hasText = card.text && card.text.trim().length > 0;
+        if (filter === 'written' && !hasText) return;
+        if (filter === 'unwritten' && hasText) return;
 
-            selector.innerHTML = matches.map(c => 
-                `<option value="${c.id}">${c.category} — ${c.title}</option>`
-            ).join('');
+        const haystack = normalizeStr(card.title + ' ' + card.text);
+        if (query && !haystack.includes(query)) return;
 
-            if (matches.some(c => c.id === currentVal)) {
-                selector.value = currentVal;
-            } else if (matches.length > 0) {
-                selector.value = matches[0].id;
-                loadSelectedCardIntoForm();
+        const item = document.createElement('div');
+        item.className = 'deck-item';
+        item.innerHTML = `
+          <div class="card-art" style="aspect-ratio: 4/4;">
+            <span class="badge-num">#${String(idx + 1).padStart(2, '0')}</span>
+            ${!hasText ? '<span class="badge-unwritten">SIN TEXTO</span>' : ''}
+            ${
+              card.image
+                ? `<img src="${card.image}" alt="${card.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                   <div class="card-art-placeholder" style="display:none;"><span>☉ ☽ ☿</span><strong>${card.title}</strong></div>`
+                : `<div class="card-art-placeholder"><span>☉ ☽ ☿</span><strong>${card.title}</strong></div>`
             }
+          </div>
+          <div class="deck-item-body">
+            <div>
+              <div class="card-title" style="font-size:1rem; margin-bottom:0.45rem;">${card.title}</div>
+              <div class="deck-excerpt">${
+                hasText ? escapeHtml(card.text) : 'Carta visual lista para recibir texto.'
+              }</div>
+            </div>
+            <div style="display:flex; justify-content:space-between; gap:0.5rem;">
+              <button class="btn" style="flex:1; justify-content:center;" onclick="openEditModal('${card.id}')">
+                ✎ ${hasText ? 'Editar / Leer' : 'Escribir texto'}
+              </button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(item);
+      });
+    }
+
+    function openEditModal(cardId) {
+      const modal = document.getElementById('card-modal');
+      const isNew = !cardId;
+      const card = isNew
+        ? { id: 'card-' + Date.now(), title: '', image: '', text: '' }
+        : deck.find(c => c.id === cardId);
+
+      if (!card) return;
+
+      document.getElementById('modal-heading').textContent = isNew ? 'Nueva Carta' : `Carta: ${card.title}`;
+      document.getElementById('edit-id').value = isNew ? '' : card.id;
+      document.getElementById('edit-title').value = card.title;
+      document.getElementById('edit-image').value = card.image || '';
+      document.getElementById('edit-text').value = card.text || '';
+      document.getElementById('edit-repo-image-select').value = card.image || '';
+
+      modal.classList.add('open');
+    }
+
+    function closeEditModal() {
+      document.getElementById('card-modal').classList.remove('open');
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    // EVENTOS UI
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const view = btn.dataset.view;
+        ['tiradas', 'mazo', 'json'].forEach(v => {
+          document.getElementById('view-' + v).classList.toggle('hidden', v !== view);
+        });
+        if (view === 'mazo') renderDeckGrid();
+      });
+    });
+
+    document.querySelectorAll('.spread-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.spread-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        currentSpread = pill.dataset.spread;
+        drawSpread();
+      });
+    });
+
+    document.getElementById('btn-draw').addEventListener('click', drawSpread);
+    document.getElementById('btn-reveal-all').addEventListener('click', () => {
+      document.querySelectorAll('.card-scene').forEach(s => s.classList.add('flipped'));
+    });
+
+    document.getElementById('btn-resync').addEventListener('click', syncWithGithub);
+    document.getElementById('search-deck').addEventListener('input', renderDeckGrid);
+    document.getElementById('filter-deck').addEventListener('change', renderDeckGrid);
+    document.getElementById('btn-new-card').addEventListener('click', () => openEditModal(null));
+    document.getElementById('btn-close-modal').addEventListener('click', closeEditModal);
+    document.getElementById('btn-cancel-modal').addEventListener('click', closeEditModal);
+
+    document.getElementById('edit-repo-image-select').addEventListener('change', (e) => {
+      if (e.target.value) {
+        document.getElementById('edit-image').value = e.target.value;
+      }
+    });
+
+    document.getElementById('btn-save-card').addEventListener('click', () => {
+      const id = document.getElementById('edit-id').value;
+      const title = document.getElementById('edit-title').value.trim() || 'Carta sin título';
+      const image = document.getElementById('edit-image').value.trim();
+      const text = document.getElementById('edit-text').value;
+
+      if (id) {
+        const idx = deck.findIndex(c => c.id === id);
+        if (idx !== -1) {
+          deck[idx].title = title;
+          deck[idx].image = image;
+          deck[idx].text = text;
         }
+      } else {
+        deck.push({
+          id: 'custom-' + Date.now(),
+          title,
+          keywords: normalizeStr(title).split(' '),
+          image,
+          text
+        });
+      }
 
-        function loadSelectedCardIntoForm() {
-            const id = document.getElementById('editor-card-selector').value;
-            const card = deck.find(c => c.id === id);
-            if (!card) return;
+      saveDeck();
+      renderDeckGrid();
+      drawSpread();
+      closeEditModal();
+    });
 
-            document.getElementById('edit-id').value = card.id;
-            document.getElementById('edit-title').value = card.title;
-            document.getElementById('edit-category').value = card.category;
-            document.getElementById('edit-tag').value = card.tag || '';
-            document.getElementById('edit-image-url').value = card.image || '';
-            document.getElementById('edit-text').value = card.text || '';
+    document.getElementById('btn-export-json').addEventListener('click', () => {
+      const blob = new Blob([JSON.stringify(deck, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'mazo.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
 
-            document.getElementById('editor-mode-badge').textContent = 'Editando Carta Existente';
-            document.getElementById('btn-delete-card').classList.remove('hidden');
-
-            refreshImagePreview(card.image, card.category, card.title);
+    document.getElementById('input-import-json').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const imported = JSON.parse(ev.target.result);
+          if (Array.isArray(imported)) {
+            deck = imported;
+            saveDeck();
+            renderDeckGrid();
+            drawSpread();
+          }
+        } catch (err) {
+          alert('El archivo JSON no es válido.');
         }
+      };
+      reader.readAsText(file);
+    });
 
-        function startNewCard() {
-            document.getElementById('edit-id').value = '';
-            document.getElementById('edit-title').value = '';
-            document.getElementById('edit-category').value = CATEGORIES[0];
-            document.getElementById('edit-tag').value = '';
-            document.getElementById('edit-image-url').value = '';
-            document.getElementById('edit-text').value = '';
-            document.getElementById('edit-file-input').value = '';
+    document.getElementById('btn-reset-default').addEventListener('click', () => {
+      if (!confirm('¿Restaurar las 12 cartas base y volver a sincronizar las imágenes del repositorio?')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      deck = JSON.parse(JSON.stringify(BASE_CARDS));
+      syncWithGithub();
+    });
 
-            document.getElementById('editor-mode-badge').textContent = 'Creando Carta Nueva';
-            document.getElementById('btn-delete-card').classList.add('hidden');
-            refreshImagePreview('', CATEGORIES[0], 'Nueva Carta');
-            document.getElementById('edit-title').focus();
-            showToast('Formulario listo para crear una carta nueva.', 'info');
-        }
-
-        function jumpToEdit(cardId) {
-            switchTab('editor');
-            document.getElementById('editor-filter-input').value = '';
-            populateEditorDropdown();
-            document.getElementById('editor-card-selector').value = cardId;
-            loadSelectedCardIntoForm();
-        }
-
-        function processImageFile(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const MAX_W = 520;
-                    const scale = img.width > MAX_W ? MAX_W / img.width : 1;
-                    canvas.width = img.width * scale;
-                    canvas.height = img.height * scale;
-
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.78);
-                    document.getElementById('edit-image-url').value = compressedBase64;
-                    refreshImagePreview(compressedBase64, document.getElementById('edit-category').value, document.getElementById('edit-title').value);
-                    showToast('Imagen cargada y optimizada. Apretá "Guardar Cambios".', 'success');
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function updatePreviewFromInput() {
-            const url = document.getElementById('edit-image-url').value.trim();
-            refreshImagePreview(url, document.getElementById('edit-category').value, document.getElementById('edit-title').value);
-        }
-
-        function removeCustomImage() {
-            document.getElementById('edit-image-url').value = '';
-            document.getElementById('edit-file-input').value = '';
-            refreshImagePreview('', document.getElementById('edit-category').value, document.getElementById('edit-title').value);
-        }
-
-        function refreshImagePreview(imgUrl, category, title) {
-            const previewEl = document.getElementById('edit-image-preview');
-            const removeBtn = document.getElementById('btn-remove-img');
-            if (imgUrl && imgUrl.trim() !== '') {
-                previewEl.src = imgUrl;
-                removeBtn.classList.remove('hidden');
-            } else {
-                previewEl.src = getFallbackCardArt(category, title);
-                removeBtn.classList.add('hidden');
-            }
-        }
-
-        function handleSaveCard(e) {
-            e.preventDefault();
-            const id = document.getElementById('edit-id').value;
-            const title = document.getElementById('edit-title').value.trim();
-            const category = document.getElementById('edit-category').value;
-            const tag = document.getElementById('edit-tag').value.trim();
-            const image = document.getElementById('edit-image-url').value.trim();
-            const text = document.getElementById('edit-text').value.trim();
-
-            if (!title) {
-                showToast('Completá al menos el título de la carta.', 'error');
-                return;
-            }
-
-            if (id) {
-                const idx = deck.findIndex(c => c.id === id);
-                if (idx !== -1) {
-                    deck[idx] = { ...deck[idx], title, category, tag, image, text };
-                }
-            } else {
-                const newId = 'card_' + Date.now();
-                deck.unshift({ id: newId, title, category, tag, image, text });
-                document.getElementById('edit-id').value = newId;
-            }
-
-            if (saveDeckToStorage()) {
-                populateEditorDropdown();
-                if (document.getElementById('edit-id').value) {
-                    document.getElementById('editor-card-selector').value = document.getElementById('edit-id').value;
-                }
-                renderGallery();
-                showToast(`✓ Carta "${title}" guardada correctamente.`, 'success');
-            }
-        }
-
-        function askDeleteCurrentCard() {
-            const id = document.getElementById('edit-id').value;
-            const card = deck.find(c => c.id === id);
-            if (!card) return;
-
-            openConfirm('Eliminar carta', `¿Querés eliminar "${card.title}" del mazo?`, () => {
-                deck = deck.filter(c => c.id !== id);
-                saveDeckToStorage();
-                populateEditorDropdown();
-                renderGallery();
-                if (deck.length > 0) loadSelectedCardIntoForm();
-                else startNewCard();
-                showToast('Carta eliminada.', 'info');
-            });
-        }
-
-        function exportDeckJSON() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(deck, null, 2));
-            const a = document.createElement('a');
-            a.setAttribute("href", dataStr);
-            a.setAttribute("download", "oraculo_periferico_mazo.json");
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            showToast('Archivo .json descargado.', 'success');
-        }
-
-        function importDeckJSON(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const imported = JSON.parse(e.target.result);
-                    if (Array.isArray(imported) && imported.length > 0) {
-                        deck = imported;
-                        saveDeckToStorage();
-                        populateEditorDropdown();
-                        loadSelectedCardIntoForm();
-                        renderGallery();
-                        showToast(`Se importaron ${deck.length} cartas correctamente.`, 'success');
-                    } else {
-                        showToast('El archivo JSON no tiene un formato válido.', 'error');
-                    }
-                } catch (err) {
-                    showToast('Error al leer el archivo JSON.', 'error');
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        function askResetFactory() {
-            openConfirm(
-                'Restaurar Mazo de Fábrica',
-                'Esto volverá a cargar las cartas originales con sus textos completos e imágenes. ¿Continuar?',
-                () => {
-                    localStorage.removeItem(STORAGE_KEY);
-                    deck = buildDefaultDeck();
-                    saveDeckToStorage();
-                    populateEditorDropdown();
-                    loadSelectedCardIntoForm();
-                    renderGallery();
-                    showToast('Mazo de fábrica restaurado con éxito.', 'success');
-                }
-            );
-        }
-
-        function showToast(message, type = 'info') {
-            const box = document.getElementById('toast-box');
-            const toast = document.createElement('div');
-            const colors = {
-                success: 'bg-emerald-950/95 border-emerald-500 text-emerald-100',
-                error: 'bg-rose-950/95 border-rose-500 text-rose-100',
-                info: 'bg-panel border-gold text-yellow-100'
-            };
-            toast.className = `pointer-events-auto px-4 py-3 rounded-xl border shadow-2xl text-xs sm:text-sm font-medium transition-all ${colors[type] || colors.info}`;
-            toast.textContent = message;
-            box.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 300);
-            }, 3400);
-        }
-
-        function openConfirm(title, message, onConfirm) {
-            const modal = document.getElementById('confirm-modal');
-            document.getElementById('confirm-title').textContent = title;
-            document.getElementById('confirm-msg').textContent = message;
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-
-            const okBtn = document.getElementById('confirm-ok');
-            const cancelBtn = document.getElementById('confirm-cancel');
-
-            const cleanup = () => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            };
-
-            okBtn.onclick = () => { cleanup(); onConfirm(); };
-            cancelBtn.onclick = cleanup;
-        }
-    </script>
+    // INICIO
+    loadInitialDeck();
+    saveDeck();
+    syncWithGithub();
+  </script>
 </body>
 </html>
